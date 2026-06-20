@@ -1,0 +1,6 @@
+{
+  "name": "GreenPulse AI",
+  "description": "Carbon Footprint Reduction Platform featuring interactive animated Earth, carbon calculator, AI recommendations via Gemini, gamified achievements, global leaderboard, eco challenges, and weather integrations.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
