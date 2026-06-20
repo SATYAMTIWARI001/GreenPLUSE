@@ -43,6 +43,7 @@ export interface CarbonInputs {
 }
 
 export interface CarbonResult {
+  engine?: string;
   score: number; // Daily emissions in kg CO2
   yearlyScore: number; // Yearly emissions in metric tons
   grade: 'A+' | 'A' | 'B' | 'C' | 'D' | 'F';

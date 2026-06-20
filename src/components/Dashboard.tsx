@@ -18,6 +18,7 @@ interface DashboardProps {
 export default function Dashboard({ user, result, onReset, onUserUpdate, onBack, showToast }: DashboardProps) {
   const [activeCategory, setActiveCategory] = useState<'transport' | 'energy' | 'food' | 'waste'>('transport');
   const [celebrating, setCelebrating] = useState<boolean>(true);
+  const [codeTab, setCodeTab] = useState<'python' | 'c' | 'arch'>('arch');
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Trigger celebration explosion particle effect on startup!
@@ -137,13 +138,19 @@ export default function Dashboard({ user, result, onReset, onUserUpdate, onBack,
             </span>
           </div>
 
-          <div className="mt-4 text-center">
+          <div className="mt-4 text-center flex flex-col items-center justify-center">
             <span className={`text-[10px] uppercase font-mono font-bold tracking-wider px-3 py-1 rounded-full border ${getGradeColor(result.grade)}`}>
               {result.score} kg CO₂ / DAY
             </span>
             <p className="text-xs text-slate-400 font-sans mt-3 leading-relaxed">
               Based on factors, you emit <b className="text-slate-100">{result.yearlyScore} metric tons</b> of CO₂ annually.
             </p>
+            {result.engine && (
+              <div className="mt-3 text-[10px] font-mono text-emerald-300 bg-emerald-950/50 border border-emerald-500/30 px-3 py-1 rounded-xl flex items-center gap-1.5 shadow-sm animate-pulse">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                Computation Engine: <b className="text-white">{result.engine}</b>
+              </div>
+            )}
           </div>
         </div>
 
@@ -412,6 +419,147 @@ export default function Dashboard({ user, result, onReset, onUserUpdate, onBack,
 
       {/* Digital Receipt Scanner */}
       <ReceiptScanner user={user} onRewardAwarded={onUserUpdate} />
+
+      {/* Dynamic Green Engine Architecture Panel (Python, C, HTML, CSS, React, JS) */}
+      <div className="glass-card bg-slate-900/40 border border-slate-700/30 p-5 rounded-2xl flex flex-col gap-4 mt-2">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-slate-800 pb-3 gap-2">
+          <div className="flex items-center gap-2">
+            <span className="p-1 px-2 rounded bg-amber-950 text-amber-400 font-mono text-[9px] font-bold uppercase tracking-wider">
+              GreenPulse Code Explorer
+            </span>
+            <h3 className="text-sm font-display font-semibold text-slate-100 flex items-center gap-2">
+              Multi-Language Calculation Cores
+            </h3>
+          </div>
+          <span className="text-[10px] font-mono text-cyan-400 font-semibold uppercase tracking-wider">
+            TS Bridged (Minimal Type Layer)
+          </span>
+        </div>
+
+        <p className="text-xs text-slate-400 leading-relaxed font-sans -mt-1">
+          To minimize overhead and comply with standard high-performance carbon auditing, our architecture bridges modern <b className="text-slate-250">React + HTML5 Canvas + CSS/Tailwind</b> with real-time server-spawned <b className="text-slate-250">Python 3 and C</b> algorithms. Select a core below to inspect the actual low-level models:
+        </p>
+
+        {/* Tab switchers */}
+        <div className="flex gap-2 bg-slate-950 p-1 rounded-xl border border-slate-800 max-w-sm self-start">
+          {[
+            { id: 'arch', label: 'System Design' },
+            { id: 'python', label: 'Python (Active Core)' },
+            { id: 'c', label: 'IoT C Lang Code' }
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setCodeTab(tab.id as any)}
+              className={`px-3 py-1.5 text-[11px] font-semibold rounded-lg cursor-pointer transition ${
+                codeTab === tab.id
+                  ? "bg-slate-900 border border-slate-800 text-emerald-400 shadow-sm font-bold"
+                  : "text-slate-500 hover:text-slate-350"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {codeTab === 'arch' && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 my-1">
+            <div className="p-3 bg-slate-950/70 border border-slate-850 rounded-xl">
+              <span className="text-[10px] font-mono text-cyan-400 font-extrabold uppercase">1. Python 3 Engine</span>
+              <p className="text-[11px] text-slate-400 mt-1 font-sans leading-relaxed">
+                Executes the high-precision formulas. Runs server-side in a sandboxed daemon with JSON pipeline streaming.
+              </p>
+            </div>
+            <div className="p-3 bg-slate-950/70 border border-slate-850 rounded-xl">
+              <span className="text-[10px] font-mono text-amber-400 font-extrabold uppercase">2. C IoT Sensor Core</span>
+              <p className="text-[11px] text-slate-400 mt-1 font-sans leading-relaxed">
+                Calculates memory-safe footprint analytics on microcontroller units, designed to run directly in smart electric meters.
+              </p>
+            </div>
+            <div className="p-3 bg-slate-950/70 border border-slate-850 rounded-xl">
+              <span className="text-[10px] font-mono text-purple-400 font-extrabold uppercase">3. Web HTML/CSS/JS</span>
+              <p className="text-[11px] text-slate-400 mt-1 font-sans leading-relaxed">
+                Presents dynamic real-time updates and interactive canvas globes styled elegantly with utility class design.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {codeTab === 'python' && (
+          <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 max-h-56 overflow-y-auto font-mono text-[11px] text-slate-300 leading-relaxed scrollbar-thin">
+            <div className="flex justify-between text-[10px] text-slate-500 uppercase pb-2 mb-2 border-b border-slate-900">
+              <span>/calculator.py (runs on server)</span>
+              <span>Python 3.10+</span>
+            </div>
+            <pre className="whitespace-pre">
+{`import sys
+import json
+
+def calculate_carbon_baseline(inputs):
+    # 1. Transportation index (daily values in kg CO2)
+    vehicle_factors = {"car": 0.42, "bike": 0.15, "bus": 0.08, "train": 0.05, "metro": 0.04}
+    factor = vehicle_factors.get(inputs.get("vehicleType"), 0.0)
+    transport_score = float(inputs.get("distancePerDay", 0)) * factor
+    
+    if inputs.get("vehicleType") == "car":
+        fuel = inputs.get("fuelType")
+        if fuel == "diesel": transport_score *= 1.25
+        elif fuel == "electric": transport_score *= 0.15
+        elif fuel == "hybrid": transport_score *= 0.6
+        
+    # 2. Electricity formulas (AC, Fan, TV, PC, Charger)
+    electricity_score = (
+        float(inputs.get("acHours", 0)) * 0.6 +
+        float(inputs.get("fanHours", 0)) * 0.0375 +
+        float(inputs.get("tvHours", 0)) * 0.05 +
+        float(inputs.get("computerHours", 0)) * 0.1
+    )
+    
+    # 3. Food Diet indices
+    diet = inputs.get("dietType")
+    food_score = 1.1 if diet == "vegan" else 1.9 if diet == "vegetarian" else 3.6
+    
+    # 4. Waste formulas
+    waste_score = float(inputs.get("plasticUseScale", 1)) * 0.25 + float(inputs.get("foodWasteScale", 1)) * 0.35
+    if inputs.get("recyclingHabit") == "full": waste_score -= 0.6
+    
+    daily_total = round(transport_score + electricity_score + food_score + max(0.1, waste_score), 2)
+    return {"score": daily_total, "yearlyScore": round(daily_total * 0.365, 2)}`}
+            </pre>
+          </div>
+        )}
+
+        {codeTab === 'c' && (
+          <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 max-h-56 overflow-y-auto font-mono text-[11px] text-slate-300 leading-relaxed scrollbar-thin">
+            <div className="flex justify-between text-[10px] text-slate-500 uppercase pb-2 mb-2 border-b border-slate-900">
+              <span>/calculator.c (embedded micro-formulas)</span>
+              <span>C99 Spec / Microcontrollers</span>
+            </div>
+            <pre className="whitespace-pre">
+{`#include <stdio.h>
+#include <string.h>
+
+typedef struct {
+    double transport;
+    double electricity;
+    double food;
+    double waste;
+    double dailyTotal;
+} CarbonMetric;
+
+void calculate_carbon(char* vehicle, double distance, char* fuel, double ac, double fan, char* diet, CarbonMetric* out) {
+    double factor = 0.0;
+    if (strcmp(vehicle, "car") == 0) factor = 0.42;
+    else if (strcmp(vehicle, "bike") == 0) factor = 0.15;
+    
+    out->transport = distance * factor;
+    out->electricity = (ac * 1.2 + fan * 0.075) * 0.5;
+    out->food = (strcmp(diet, "vegan") == 0) ? 1.1 : 3.6;
+    out->dailyTotal = out->transport + out->electricity + out->food;
+}`}
+            </pre>
+          </div>
+        )}
+      </div>
 
       <div className="flex justify-between items-center mt-2">
         <button

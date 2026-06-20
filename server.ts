@@ -4,6 +4,7 @@ import fs from "fs";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
+import { spawn } from "child_process";
 
 dotenv.config();
 
@@ -309,6 +310,43 @@ app.post("/api/user/update-profile", (req, res) => {
   res.json({ message: "User profile updated successfully", user: userResponse });
 });
 
+// Python integration runner
+function runPythonCalculator(inputs: any): Promise<any> {
+  return new Promise((resolve, reject) => {
+    try {
+      const py = spawn("python3", ["calculator.py"]);
+      let stdoutData = "";
+      let stderrData = "";
+
+      py.stdout.on("data", (data) => {
+        stdoutData += data.toString();
+      });
+
+      py.stderr.on("data", (data) => {
+        stderrData += data.toString();
+      });
+
+      py.on("close", (code) => {
+        if (code !== 0) {
+          reject(new Error(stderrData || `Python exit code: ${code}`));
+          return;
+        }
+        try {
+          const parsed = JSON.parse(stdoutData.trim());
+          resolve(parsed);
+        } catch (err) {
+          reject(err);
+        }
+      });
+
+      py.stdin.write(JSON.stringify(inputs));
+      py.stdin.end();
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
 // Static baseline calculator formulas + dynamic suggestions fallback
 function calculateCarbonBaseline(inputs: any) {
   let transportScore = 0;
@@ -430,8 +468,14 @@ app.post("/api/carbon/calculate", async (req, res) => {
     return res.status(400).json({ error: "Missing calculation inputs" });
   }
 
-  // Calculate high-precision local baseline first
-  const result = calculateCarbonBaseline(inputs);
+  // Calculate footprint using high-precision Python engine first, falling back to local JS
+  let result;
+  try {
+    result = await runPythonCalculator(inputs);
+  } catch (pyErr) {
+    console.warn("Python engine execution failed, running core JS calculation fallback instead:", pyErr);
+    result = calculateCarbonBaseline(inputs);
+  }
 
   // Invoke Gemini for personalized, hyperrealistic premium recommendations if key available
   const ai = getGemini();
