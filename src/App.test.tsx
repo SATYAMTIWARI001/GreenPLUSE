@@ -28,7 +28,7 @@ function sanitizeInput(str: string): string {
     .replace(/'/g, "&#x27;");
 }
 
-// Mock standard canvas context and scrollIntoView to support JSDOM testing
+// Mock standard canvas context, scrollIntoView, and fetch to support JSDOM testing
 beforeAll(() => {
   window.HTMLElement.prototype.scrollIntoView = vi.fn();
   HTMLCanvasElement.prototype.getContext = vi.fn().mockReturnValue({
@@ -36,6 +36,22 @@ beforeAll(() => {
     beginPath: vi.fn(),
     arc: vi.fn(),
     fill: vi.fn(),
+  });
+
+  // Mock global fetch to return clean mock values and prevent URL parsing errors
+  global.fetch = vi.fn().mockImplementation((url: string) => {
+    if (url.includes("/api/community/leaderboard")) {
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve([
+          { id: "leader-1", name: "Satyam Tiwari", ecoRank: "Sustainability Master", carbonScore: 4.1, points: 4850, type: "user" }
+        ])
+      } as any);
+    }
+    return Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({})
+    } as any);
   });
 });
 
@@ -117,11 +133,13 @@ describe('PulseAssistant eco guide rendering', () => {
 });
 
 describe('Leaderboard filters and search queries', () => {
-  it('renders active tabs and search text fields', () => {
+  it('renders active tabs and search text fields', async () => {
     const onBack = vi.fn();
     render(<Leaderboard onBack={onBack} />);
     expect(screen.getByText('Global Sustainability League')).toBeDefined();
     expect(screen.getByPlaceholderText(/Search/i)).toBeDefined();
+    // Wait for mock data to load inside react act boundaries
+    await screen.findByText('Satyam Tiwari');
   });
 });
 
