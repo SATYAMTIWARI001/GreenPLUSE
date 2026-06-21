@@ -1,0 +1,1461 @@
+{
+  "users": [
+    {
+      "id": "admin-id",
+      "email": "satyam000108@gmail.com",
+      "name": "Satyam Tiwari",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/bottts/svg?seed=Satyam%20Tiwari",
+      "createdAt": "2026-06-20T19:02:51.829Z",
+      "carbonScore": 4.1,
+      "ecoRank": "Sustainability Master",
+      "badgeIds": [
+        "badge-1",
+        "badge-2",
+        "badge-3",
+        "badge-4",
+        "badge-5"
+      ],
+      "points": 4850,
+      "completedChallenges": [
+        "challenge-1",
+        "challenge-2"
+      ],
+      "role": "admin",
+      "gender": "Male"
+    },
+    {
+      "id": "user-elena",
+      "email": "sanika@pulse.eco",
+      "name": "Sanika Husan",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Sanika%20Husan",
+      "createdAt": "2026-06-20T19:02:51.830Z",
+      "carbonScore": 4.8,
+      "ecoRank": "Earth Champion",
+      "badgeIds": [
+        "badge-1",
+        "badge-2",
+        "badge-3",
+        "badge-4"
+      ],
+      "points": 4200,
+      "completedChallenges": [
+        "challenge-1"
+      ],
+      "role": "user"
+    },
+    {
+      "id": "user-john",
+      "email": "abbas@pulse.eco",
+      "name": "Abbas Masood",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Abbas%20Masood",
+      "createdAt": "2026-06-20T19:02:51.830Z",
+      "carbonScore": 5.5,
+      "ecoRank": "Green Warrior",
+      "badgeIds": [
+        "badge-1",
+        "badge-2"
+      ],
+      "points": 3900,
+      "completedChallenges": [
+        "challenge-3"
+      ],
+      "role": "user"
+    },
+    {
+      "id": "user-idju1rc",
+      "email": "guest-lgwybqq@pulse.eco",
+      "name": "Aarav Sharma",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Aarav%20Sharma",
+      "createdAt": "2026-06-20T19:03:33.300Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-mwa5wcg",
+      "email": "guest-lwtcuxc@pulse.eco",
+      "name": "Ananya Singh",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Ananya%20Singh",
+      "createdAt": "2026-06-20T19:03:33.305Z",
+      "carbonScore": 4.48,
+      "ecoRank": "Planet Protector",
+      "badgeIds": [
+        "badge-1",
+        "badge-calc",
+        "badge-eco-champion",
+        "badge-warrior"
+      ],
+      "points": 1990,
+      "completedChallenges": [
+        "challenge-2"
+      ],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-vdug9p2",
+      "email": "guest-0kl27r1@pulse.eco",
+      "name": "Rohan Verma",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Rohan%20Verma",
+      "createdAt": "2026-06-21T08:19:09.429Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-zuxhrdp",
+      "email": "guest-pypu743@pulse.eco",
+      "name": "Isha Patel",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Isha%20Patel",
+      "createdAt": "2026-06-21T08:19:09.432Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-5lckk1t",
+      "email": "guest-m2kytaa@pulse.eco",
+      "name": "Kabir Khan",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Kabir%20Khan",
+      "createdAt": "2026-06-21T08:31:46.768Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-hntl949",
+      "email": "guest-ah1obhb@pulse.eco",
+      "name": "Meera Nair",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Meera%20Nair",
+      "createdAt": "2026-06-21T10:09:01.034Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-1ku7s57",
+      "email": "guest-ovf4st0@pulse.eco",
+      "name": "Arjun Reddy",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun%20Reddy",
+      "createdAt": "2026-06-21T10:09:01.050Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-rqa9rfw",
+      "email": "guest-p9zgaj3@pulse.eco",
+      "name": "Priya Iyer",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Priya%20Iyer",
+      "createdAt": "2026-06-21T10:09:08.052Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-lnaz789",
+      "email": "guest-1gsz0yh@pulse.eco",
+      "name": "Zoya Ansari",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Zoya%20Ansari",
+      "createdAt": "2026-06-21T10:09:08.053Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-jda8t2c",
+      "email": "guest-tmrcbwv@pulse.eco",
+      "name": "Neha Gupta",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Neha%20Gupta",
+      "createdAt": "2026-06-21T10:09:08.058Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-5st1goq",
+      "email": "guest-20esi35@pulse.eco",
+      "name": "Satyam Tiwari",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Satyam Tiwari",
+      "createdAt": "2026-06-21T10:14:15.291Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-10vqubm",
+      "email": "guest-fu9vqof@pulse.eco",
+      "name": "Priya Iyer",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Priya Iyer",
+      "createdAt": "2026-06-21T10:14:15.293Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-iu4nrwi",
+      "email": "guest-r2b5jrj@pulse.eco",
+      "name": "Zoya Ansari",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Zoya Ansari",
+      "createdAt": "2026-06-21T10:14:15.295Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-72kiumd",
+      "email": "guest-7xqx5t6@pulse.eco",
+      "name": "Ananya Singh",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Ananya Singh",
+      "createdAt": "2026-06-21T10:14:16.379Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-89t6mmw",
+      "email": "guest-2ipu8bj@pulse.eco",
+      "name": "Ananya Singh",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Ananya Singh",
+      "createdAt": "2026-06-21T10:14:16.384Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-vwi0dmk",
+      "email": "guest-xvzv6ig@pulse.eco",
+      "name": "Zoya Ansari",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Zoya Ansari",
+      "createdAt": "2026-06-21T10:14:18.021Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-wl72jld",
+      "email": "guest-vi5gc1v@pulse.eco",
+      "name": "Rohan Verma",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Rohan Verma",
+      "createdAt": "2026-06-21T10:14:18.029Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-2cl2gh6",
+      "email": "guest-k60fm5v@pulse.eco",
+      "name": "Aarav Sharma",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Aarav Sharma",
+      "createdAt": "2026-06-21T10:14:18.035Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-p2xlwbi",
+      "email": "guest-fde5vni@pulse.eco",
+      "name": "Meera Nair",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Meera Nair",
+      "createdAt": "2026-06-21T10:14:18.043Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-esi9xv8",
+      "email": "guest-iojt43y@pulse.eco",
+      "name": "Rohan Verma",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Rohan Verma",
+      "createdAt": "2026-06-21T10:14:19.160Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-0tmxw8p",
+      "email": "guest-d84khyk@pulse.eco",
+      "name": "Satyam Tiwari",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Satyam Tiwari",
+      "createdAt": "2026-06-21T10:14:19.163Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-s9jxpr7",
+      "email": "guest-6rjbo7t@pulse.eco",
+      "name": "Priya Iyer",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Priya Iyer",
+      "createdAt": "2026-06-21T10:14:19.166Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-n5yqpnx",
+      "email": "guest-mzk5g36@pulse.eco",
+      "name": "Ananya Singh",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Ananya Singh",
+      "createdAt": "2026-06-21T10:14:20.173Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-mi3wpuw",
+      "email": "guest-ifucby4@pulse.eco",
+      "name": "Aarav Sharma",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Aarav Sharma",
+      "createdAt": "2026-06-21T10:14:20.178Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-lljnomd",
+      "email": "guest-h0slgcb@pulse.eco",
+      "name": "Rohan Verma",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Rohan Verma",
+      "createdAt": "2026-06-21T10:14:21.188Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-9x63zfv",
+      "email": "guest-t0cmfj6@pulse.eco",
+      "name": "Priya Iyer",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Priya Iyer",
+      "createdAt": "2026-06-21T10:14:21.194Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-ia03amh",
+      "email": "guest-llrd7xt@pulse.eco",
+      "name": "Isha Patel",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Isha Patel",
+      "createdAt": "2026-06-21T10:14:22.262Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-tt94tjj",
+      "email": "guest-vfjvh4n@pulse.eco",
+      "name": "Meera Nair",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Meera Nair",
+      "createdAt": "2026-06-21T10:14:22.264Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-o4678b7",
+      "email": "guest-wurvaaa@pulse.eco",
+      "name": "Zoya Ansari",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Zoya Ansari",
+      "createdAt": "2026-06-21T10:14:22.271Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-tkqnwag",
+      "email": "guest-c1ueavz@pulse.eco",
+      "name": "Kabir Khan",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Kabir Khan",
+      "createdAt": "2026-06-21T10:14:23.296Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-ntmsl7y",
+      "email": "guest-qnlt5en@pulse.eco",
+      "name": "Arjun Reddy",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun Reddy",
+      "createdAt": "2026-06-21T10:14:23.297Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-d5z4ur7",
+      "email": "guest-ocfsynn@pulse.eco",
+      "name": "Meera Nair",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Meera Nair",
+      "createdAt": "2026-06-21T10:14:23.301Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-rsrmhl8",
+      "email": "guest-hw8ys0r@pulse.eco",
+      "name": "Meera Nair",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Meera Nair",
+      "createdAt": "2026-06-21T10:14:24.310Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-fl8wdti",
+      "email": "guest-ncqqgmn@pulse.eco",
+      "name": "Rohan Verma",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Rohan Verma",
+      "createdAt": "2026-06-21T10:14:24.314Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-e1yvy22",
+      "email": "guest-2rbgtev@pulse.eco",
+      "name": "Sanika Husan",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Sanika Husan",
+      "createdAt": "2026-06-21T10:14:24.316Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-onc9kt4",
+      "email": "guest-zqhk1ul@pulse.eco",
+      "name": "Kabir Khan",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Kabir Khan",
+      "createdAt": "2026-06-21T10:14:28.374Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-h9leqts",
+      "email": "guest-k1rqyuh@pulse.eco",
+      "name": "Aarav Sharma",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Aarav Sharma",
+      "createdAt": "2026-06-21T10:14:28.375Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-giov79x",
+      "email": "guest-hm9mtpd@pulse.eco",
+      "name": "Arjun Reddy",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun Reddy",
+      "createdAt": "2026-06-21T10:14:28.379Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-ygmv2f9",
+      "email": "guest-9hcxypu@pulse.eco",
+      "name": "Rohan Verma",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Rohan Verma",
+      "createdAt": "2026-06-21T10:14:29.242Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-b2b6s7p",
+      "email": "guest-dew7buq@pulse.eco",
+      "name": "Priya Iyer",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Priya Iyer",
+      "createdAt": "2026-06-21T10:14:29.244Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-lhz1kea",
+      "email": "guest-djfti1v@pulse.eco",
+      "name": "Ananya Singh",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Ananya Singh",
+      "createdAt": "2026-06-21T10:14:29.246Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-vphm6uw",
+      "email": "guest-k9fs4fa@pulse.eco",
+      "name": "Arjun Reddy",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun Reddy",
+      "createdAt": "2026-06-21T10:14:30.188Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-mkuxcjy",
+      "email": "guest-c46jf8r@pulse.eco",
+      "name": "Rohan Verma",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Rohan Verma",
+      "createdAt": "2026-06-21T10:14:30.196Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-8gi577r",
+      "email": "guest-61f764a@pulse.eco",
+      "name": "Priya Iyer",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Priya Iyer",
+      "createdAt": "2026-06-21T10:14:31.250Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-wmuym86",
+      "email": "guest-5ngfc7f@pulse.eco",
+      "name": "Satyam Tiwari",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Satyam Tiwari",
+      "createdAt": "2026-06-21T10:14:31.251Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-ultrzdh",
+      "email": "guest-9by0ogq@pulse.eco",
+      "name": "Meera Nair",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Meera Nair",
+      "createdAt": "2026-06-21T10:14:31.258Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-9d2e6tr",
+      "email": "guest-q5d7d5j@pulse.eco",
+      "name": "Sanika Husan",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Sanika Husan",
+      "createdAt": "2026-06-21T10:14:32.475Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-07utejx",
+      "email": "guest-2woheui@pulse.eco",
+      "name": "Aarav Sharma",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Aarav Sharma",
+      "createdAt": "2026-06-21T10:14:32.477Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-yhftzn6",
+      "email": "guest-5w5as23@pulse.eco",
+      "name": "Abbas Masood",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Abbas Masood",
+      "createdAt": "2026-06-21T10:14:32.479Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-jdlym4a",
+      "email": "guest-85p8826@pulse.eco",
+      "name": "Sanika",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Sanika Husan",
+      "createdAt": "2026-06-21T10:14:32.482Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    }
+  ],
+  "leaderboard": [
+    {
+      "id": "leader-1",
+      "name": "Satyam Tiwari",
+      "ecoRank": "Sustainability Master",
+      "carbonScore": 4.1,
+      "points": 4850,
+      "type": "user"
+    },
+    {
+      "id": "leader-2",
+      "name": "Sanika Husan",
+      "ecoRank": "Earth Champion",
+      "carbonScore": 4.8,
+      "points": 4200,
+      "type": "user"
+    },
+    {
+      "id": "leader-3",
+      "name": "Abbas Masood",
+      "ecoRank": "Green Warrior",
+      "carbonScore": 5.5,
+      "points": 3900,
+      "type": "user"
+    },
+    {
+      "id": "college-1",
+      "name": "IIT Bombay Green Club",
+      "ecoRank": "College League",
+      "carbonScore": 3.9,
+      "points": 245000,
+      "type": "college"
+    },
+    {
+      "id": "college-2",
+      "name": "BITS Pilani Eco-League",
+      "ecoRank": "College League",
+      "carbonScore": 4.4,
+      "points": 239000,
+      "type": "college"
+    },
+    {
+      "id": "college-3",
+      "name": "Delhi University Solar Team",
+      "ecoRank": "College League",
+      "carbonScore": 4.2,
+      "points": 228000,
+      "type": "college"
+    },
+    {
+      "id": "city-1",
+      "name": "Bengaluru",
+      "ecoRank": "City Grid",
+      "carbonScore": 3.2,
+      "points": 94000,
+      "type": "city"
+    },
+    {
+      "id": "city-2",
+      "name": "Mumbai",
+      "ecoRank": "City Grid",
+      "carbonScore": 4.5,
+      "points": 89000,
+      "type": "city"
+    },
+    {
+      "id": "city-3",
+      "name": "New Delhi",
+      "ecoRank": "City Grid",
+      "carbonScore": 3.8,
+      "points": 81200,
+      "type": "city"
+    },
+    {
+      "id": "user-idju1rc",
+      "name": "Aarav Sharma",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-mwa5wcg",
+      "name": "Ananya Singh",
+      "ecoRank": "Planet Protector",
+      "carbonScore": 4.48,
+      "points": 1990,
+      "type": "user"
+    },
+    {
+      "id": "user-vdug9p2",
+      "name": "Rohan Verma",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-zuxhrdp",
+      "name": "Isha Patel",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-5lckk1t",
+      "name": "Kabir Khan",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-hntl949",
+      "name": "Meera Nair",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-1ku7s57",
+      "name": "Arjun Reddy",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-rqa9rfw",
+      "name": "Priya Iyer",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-lnaz789",
+      "name": "Zoya Ansari",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-jda8t2c",
+      "name": "Neha Gupta",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-5st1goq",
+      "name": "Satyam Tiwari",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-10vqubm",
+      "name": "Priya Iyer",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-iu4nrwi",
+      "name": "Zoya Ansari",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-72kiumd",
+      "name": "Ananya Singh",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-89t6mmw",
+      "name": "Ananya Singh",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-vwi0dmk",
+      "name": "Zoya Ansari",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-wl72jld",
+      "name": "Rohan Verma",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-2cl2gh6",
+      "name": "Aarav Sharma",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-p2xlwbi",
+      "name": "Meera Nair",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-esi9xv8",
+      "name": "Rohan Verma",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-0tmxw8p",
+      "name": "Satyam Tiwari",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-s9jxpr7",
+      "name": "Priya Iyer",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-n5yqpnx",
+      "name": "Ananya Singh",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-mi3wpuw",
+      "name": "Aarav Sharma",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-lljnomd",
+      "name": "Rohan Verma",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-9x63zfv",
+      "name": "Priya Iyer",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-ia03amh",
+      "name": "Isha Patel",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-tt94tjj",
+      "name": "Meera Nair",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-o4678b7",
+      "name": "Zoya Ansari",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-tkqnwag",
+      "name": "Kabir Khan",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-ntmsl7y",
+      "name": "Arjun Reddy",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-d5z4ur7",
+      "name": "Meera Nair",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-rsrmhl8",
+      "name": "Meera Nair",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-fl8wdti",
+      "name": "Rohan Verma",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-e1yvy22",
+      "name": "Sanika Husan",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-onc9kt4",
+      "name": "Kabir Khan",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-h9leqts",
+      "name": "Aarav Sharma",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-giov79x",
+      "name": "Arjun Reddy",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-ygmv2f9",
+      "name": "Rohan Verma",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-b2b6s7p",
+      "name": "Priya Iyer",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-lhz1kea",
+      "name": "Ananya Singh",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-vphm6uw",
+      "name": "Arjun Reddy",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-mkuxcjy",
+      "name": "Rohan Verma",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-8gi577r",
+      "name": "Priya Iyer",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-wmuym86",
+      "name": "Satyam Tiwari",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-ultrzdh",
+      "name": "Meera Nair",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-9d2e6tr",
+      "name": "Sanika Husan",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-07utejx",
+      "name": "Aarav Sharma",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-yhftzn6",
+      "name": "Abbas Masood",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-jdlym4a",
+      "name": "Sanika",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    }
+  ],
+  "challenges": [
+    {
+      "id": "challenge-1",
+      "title": "Bus Over Auto",
+      "description": "Take a local bus instead of an auto-rickshaw today.",
+      "category": "transport",
+      "points": 50,
+      "completedCount": 142
+    },
+    {
+      "id": "challenge-2",
+      "title": "Monsoon Discipline",
+      "description": "Switch off the air conditioner during cool monsoon evenings.",
+      "category": "energy",
+      "points": 40,
+      "completedCount": 90
+    },
+    {
+      "id": "challenge-3",
+      "title": "Clay Tableware",
+      "description": "Use clay kulhads instead of single-use plastic cups.",
+      "category": "waste",
+      "points": 30,
+      "completedCount": 115
+    },
+    {
+      "id": "challenge-4",
+      "title": "Diwali Eco-Decor",
+      "description": "Celebrate festive occasions using clay diyas and biodegradable decorations.",
+      "category": "waste",
+      "points": 50,
+      "completedCount": 62
+    },
+    {
+      "id": "challenge-5",
+      "title": "Indian Diet Day",
+      "description": "Consume purely local vegetarian meals today.",
+      "category": "food",
+      "points": 30,
+      "completedCount": 201
+    },
+    {
+      "id": "challenge-6",
+      "title": "Carpool Commute",
+      "description": "Carpool to office or college today to save fuel.",
+      "category": "transport",
+      "points": 60,
+      "completedCount": 77
+    }
+  ],
+  "announcements": [
+    {
+      "id": "ann-1",
+      "title": "GreenPulse AI Launched!",
+      "content": "Welcome to our green community! Calculate your carbon footprint score and share AI suggestions with your friends.",
+      "createdAt": "2026-06-20T19:02:51.830Z",
+      "important": true
+    }
+  ],
+  "environment": {
+    "treesPlantedTotal": 1872,
+    "co2ReducedTotal": 24552,
+    "usersActiveCount": 362
+  }
+}
