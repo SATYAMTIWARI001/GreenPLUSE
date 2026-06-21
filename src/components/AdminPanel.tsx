@@ -234,18 +234,20 @@ export default function AdminPanel({ onBack, showToast }: AdminPanelProps) {
 
                     {editingEntryId === entry.id && (
                       <div className="p-2 bg-slate-900 rounded-lg flex gap-2 items-center mt-1 animate-pulse">
+                        <label htmlFor={"new-score-" + entry.id} className="sr-only">New carbon score</label>
                         <input
+                          id={"new-score-" + entry.id}
                           type="number"
                           placeholder="Score kg"
-                          aria-label="New carbon score"
                           value={newScore}
                           onChange={(e) => setNewScore(e.target.value)}
                           className="bg-slate-950 text-[10px] p-1.5 rounded border border-slate-800 text-white w-20"
                         />
+                        <label htmlFor={"new-points-" + entry.id} className="sr-only">New eco points</label>
                         <input
+                          id={"new-points-" + entry.id}
                           type="number"
                           placeholder="Points"
-                          aria-label="New eco points"
                           value={newPoints}
                           onChange={(e) => setNewPoints(e.target.value)}
                           className="bg-slate-950 text-[10px] p-1.5 rounded border border-slate-800 text-white w-20"
@@ -275,18 +277,20 @@ export default function AdminPanel({ onBack, showToast }: AdminPanelProps) {
               </h3>
               
               <form onSubmit={handleAddAnnouncement} className="flex flex-col gap-3">
+                <label htmlFor="ann-title-input" className="sr-only">System Headline title</label>
                 <input
+                  id="ann-title-input"
                   type="text"
                   placeholder="System Headline title"
-                  aria-label="System Headline title"
                   value={annTitle}
                   onChange={(e) => setAnnTitle(e.target.value)}
                   className="bg-slate-950 border border-slate-850/80 rounded-lg p-2 text-xs focus:outline-none focus:border-emerald-500 w-full text-white"
                   required
                 />
+                <label htmlFor="ann-content-textarea" className="sr-only">Body explanation context</label>
                 <textarea
+                  id="ann-content-textarea"
                   placeholder="Body explanation context..."
-                  aria-label="Body explanation context"
                   value={annContent}
                   onChange={(e) => setAnnContent(e.target.value)}
                   className="bg-slate-950 border border-slate-850/80 rounded-lg p-2 text-xs focus:outline-none focus:border-emerald-500 w-full text-white h-16 resize-none"
@@ -320,19 +324,21 @@ export default function AdminPanel({ onBack, showToast }: AdminPanelProps) {
               </h3>
 
               <form onSubmit={handleAddChallenge} className="flex flex-col gap-3">
+                <label htmlFor="chal-title-input" className="sr-only">Eco challenge title</label>
                 <input
+                  id="chal-title-input"
                   type="text"
                   placeholder="Eco challenge title"
-                  aria-label="Eco challenge title"
                   value={chalTitle}
                   onChange={(e) => setChalTitle(e.target.value)}
                   className="bg-slate-950 border border-slate-850/80 rounded-lg p-2 text-xs focus:outline-none focus:border-emerald-500 w-full text-white"
                   required
                 />
+                <label htmlFor="chal-desc-input" className="sr-only">Short brief description</label>
                 <input
+                  id="chal-desc-input"
                   type="text"
                   placeholder="Short brief description"
-                  aria-label="Short brief description"
                   value={chalDesc}
                   onChange={(e) => setChalDesc(e.target.value)}
                   className="bg-slate-950 border border-slate-850/80 rounded-lg p-2 text-xs focus:outline-none focus:border-emerald-500 w-full text-white"
@@ -340,9 +346,10 @@ export default function AdminPanel({ onBack, showToast }: AdminPanelProps) {
                 />
 
                 <div className="grid grid-cols-2 gap-2">
+                  <label htmlFor="chal-category-select" className="sr-only">Eco challenge category</label>
                   <select
+                    id="chal-category-select"
                     value={chalCategory}
-                    aria-label="Eco challenge category"
                     onChange={(e) => setChalCategory(e.target.value)}
                     className="bg-slate-950 text-xs border border-slate-850 rounded-lg p-2 focus:outline-none text-white"
                   >
@@ -352,10 +359,11 @@ export default function AdminPanel({ onBack, showToast }: AdminPanelProps) {
                     <option value="waste">Sorting Waste</option>
                   </select>
 
+                  <label htmlFor="chal-points-input" className="sr-only">Points count</label>
                   <input
+                    id="chal-points-input"
                     type="number"
                     placeholder="Points (e.g. 50)"
-                    aria-label="Points count"
                     value={chalPoints}
                     onChange={(e) => setChalPoints(parseInt(e.target.value, 10))}
                     className="bg-slate-950 border border-slate-850/80 rounded-lg p-2 text-xs focus:outline-none focus:border-emerald-500 text-white"

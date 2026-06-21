@@ -261,14 +261,15 @@ export default function PulseAssistant() {
         className="p-3.5 bg-slate-950/80 border-t border-slate-800 flex gap-2"
         aria-label="Ask Pulse Eco Agent"
       >
+        <label htmlFor="pulse-chat-input" className="sr-only">Message for Pulse</label>
         <input
+          id="pulse-chat-input"
           ref={inputRef}
           type="text"
           value={inputVal}
           onChange={(e) => setInputVal(e.target.value.slice(0, 500))}
           placeholder="Ask about your score, commute, energy, food, or waste..."
           className="flex-1 bg-slate-900 border border-slate-800 focus:border-emerald-500/50 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none transition font-sans"
-          aria-label="Message for Pulse"
           maxLength={500}
         />
         <button

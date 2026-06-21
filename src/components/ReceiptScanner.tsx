@@ -140,7 +140,9 @@ export default function ReceiptScanner({ user, onRewardAwarded }: ReceiptScanner
                 : "border-slate-800 bg-slate-950/30 hover:border-slate-700 hover:bg-slate-950/50"
             }`}
           >
+            <label htmlFor="receipt-file-input" className="sr-only">Upload receipt file</label>
             <input
+              id="receipt-file-input"
               ref={fileInputRef}
               type="file"
               onChange={handleFileChange}

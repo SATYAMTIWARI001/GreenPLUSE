@@ -114,3 +114,11 @@ export interface SystemAnalytics {
   announcements: Announcement[];
   environment: EnvironmentStats;
 }
+
+export interface DBStructure {
+  users: (User & { password?: string })[];
+  leaderboard: LeaderboardEntry[];
+  challenges: Challenge[];
+  announcements: Announcement[];
+  environment: EnvironmentStats;
+}

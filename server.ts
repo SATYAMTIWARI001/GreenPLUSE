@@ -6,6 +6,7 @@ import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
 import { spawn } from "child_process";
 import crypto from "crypto";
+import { DBStructure, User, LeaderboardEntry, CarbonInputs, CarbonResult, Challenge } from "./src/types";
 
 dotenv.config();
 
@@ -92,7 +93,7 @@ const defaultDB = {
       badgeIds: ["badge-1", "badge-2", "badge-3", "badge-4", "badge-5"],
       points: 4850,
       completedChallenges: ["challenge-1", "challenge-2"],
-      role: "admin",
+      role: "admin" as const,
       gender: "Male"
     },
     {
@@ -107,7 +108,7 @@ const defaultDB = {
       badgeIds: ["badge-1", "badge-2", "badge-3", "badge-4"],
       points: 4200,
       completedChallenges: ["challenge-1"],
-      role: "user"
+      role: "user" as const
     },
     {
       id: "user-john",
@@ -121,26 +122,26 @@ const defaultDB = {
       badgeIds: ["badge-1", "badge-2"],
       points: 3900,
       completedChallenges: ["challenge-3"],
-      role: "user"
+      role: "user" as const
     }
   ],
   leaderboard: [
-    { id: "leader-1", name: "Satyam Tiwari", ecoRank: "Sustainability Master", carbonScore: 4.1, points: 4850, type: "user" },
-    { id: "leader-2", name: "Sanika Husan", ecoRank: "Earth Champion", carbonScore: 4.8, points: 4200, type: "user" },
-    { id: "leader-3", name: "Abbas Masood", ecoRank: "Green Warrior", carbonScore: 5.5, points: 3900, type: "user" },
-    { id: "college-1", name: "Stanford Solar Club", ecoRank: "College League", carbonScore: 3.9, points: 245000, type: "college" },
-    { id: "college-2", name: "MIT Green Spark", ecoRank: "College League", carbonScore: 4.4, points: 239000, type: "college" },
-    { id: "college-3", name: "Berkeley Ecowarriors", ecoRank: "College League", carbonScore: 4.2, points: 228000, type: "college" },
-    { id: "city-1", name: "Copenhagen", ecoRank: "City Grid", carbonScore: 3.2, points: 94000, type: "city" },
-    { id: "city-2", name: "San Francisco", ecoRank: "City Grid", carbonScore: 4.5, points: 89000, type: "city" },
-    { id: "city-3", name: "Tokyo Smart-District", ecoRank: "City Grid", carbonScore: 3.8, points: 81200, type: "city" }
+    { id: "leader-1", name: "Satyam Tiwari", ecoRank: "Sustainability Master", carbonScore: 4.1, points: 4850, type: "user" as const },
+    { id: "leader-2", name: "Sanika Husan", ecoRank: "Earth Champion", carbonScore: 4.8, points: 4200, type: "user" as const },
+    { id: "leader-3", name: "Abbas Masood", ecoRank: "Green Warrior", carbonScore: 5.5, points: 3900, type: "user" as const },
+    { id: "college-1", name: "Stanford Solar Club", ecoRank: "College League", carbonScore: 3.9, points: 245000, type: "college" as const },
+    { id: "college-2", name: "MIT Green Spark", ecoRank: "College League", carbonScore: 4.4, points: 239000, type: "college" as const },
+    { id: "college-3", name: "Berkeley Ecowarriors", ecoRank: "College League", carbonScore: 4.2, points: 228000, type: "college" as const },
+    { id: "city-1", name: "Copenhagen", ecoRank: "City Grid", carbonScore: 3.2, points: 94000, type: "city" as const },
+    { id: "city-2", name: "San Francisco", ecoRank: "City Grid", carbonScore: 4.5, points: 89000, type: "city" as const },
+    { id: "city-3", name: "Tokyo Smart-District", ecoRank: "City Grid", carbonScore: 3.8, points: 81200, type: "city" as const }
   ],
   challenges: [
-    { id: "challenge-1", title: "Human Engine Mode", description: "Walk or Cycle for all trips under 3km today.", category: "transport", points: 50, completedCount: 142 },
-    { id: "challenge-2", title: "Thermal Discipline", description: "Turn off your Air Conditioner 2 hours earlier than usual.", category: "energy", points: 40, completedCount: 89 },
-    { id: "challenge-3", title: "Compassionate Plate", description: "Have a completely Vegetarian or Vegan lunch/dinner.", category: "food", points: 30, completedCount: 201 },
-    { id: "challenge-4", title: "Plastic Embargo", description: "Avoid using single-use plastic cups/bottles today.", category: "waste", points: 30, completedCount: 115 },
-    { id: "challenge-5", title: "Ecosystem Builder", description: "Plant a tree, adopt a potted plant or water public plants.", category: "waste", points: 100, completedCount: 45 }
+    { id: "challenge-1", title: "Human Engine Mode", description: "Walk or Cycle for all trips under 3km today.", category: "transport" as const, points: 50, completedCount: 142 },
+    { id: "challenge-2", title: "Thermal Discipline", description: "Turn off your Air Conditioner 2 hours earlier than usual.", category: "energy" as const, points: 40, completedCount: 89 },
+    { id: "challenge-3", title: "Compassionate Plate", description: "Have a completely Vegetarian or Vegan lunch/dinner.", category: "food" as const, points: 30, completedCount: 201 },
+    { id: "challenge-4", title: "Plastic Embargo", description: "Avoid using single-use plastic cups/bottles today.", category: "waste" as const, points: 30, completedCount: 115 },
+    { id: "challenge-5", title: "Ecosystem Builder", description: "Plant a tree, adopt a potted plant or water public plants.", category: "waste" as const, points: 100, completedCount: 45 }
   ],
   announcements: [
     { id: "ann-1", title: "GreenPulse AI Launched!", content: "Welcome to our green community! Calculate your carbon score and share AI suggestions with your friends.", createdAt: new Date().toISOString(), important: true }
@@ -153,20 +154,20 @@ const defaultDB = {
 };
 
 // Database in-memory cache
-let dbCache: any = null;
+let dbCache: DBStructure | null = null;
 
 // Database utility functions
-function loadDB() {
+function loadDB(): DBStructure {
   if (dbCache) {
     return dbCache;
   }
   try {
     if (fs.existsSync(dbPath)) {
       const data = fs.readFileSync(dbPath, "utf-8");
-      const db = JSON.parse(data);
+      const db = JSON.parse(data) as DBStructure;
       let migrated = false;
       if (db.users && Array.isArray(db.users)) {
-        db.users.forEach((u: any) => {
+        db.users.forEach((u) => {
           // Auto-migrate any plain text passwords
           if (u.password && u.password.length !== 64) {
             u.password = hashPassword(u.password);
@@ -184,10 +185,10 @@ function loadDB() {
     console.error("Error reading database file, returning default database", e);
   }
   // Setup default db if not existing or broken
-  const initialDB = { ...defaultDB };
-  initialDB.users = initialDB.users.map((u: any) => ({
+  const initialDB: DBStructure = { ...defaultDB };
+  initialDB.users = initialDB.users.map((u) => ({
     ...u,
-    password: u.password.length !== 64 ? hashPassword(u.password) : u.password
+    password: u.password && u.password.length !== 64 ? hashPassword(u.password) : u.password
   }));
   try {
     fs.writeFileSync(dbPath, JSON.stringify(initialDB, null, 2));
@@ -198,7 +199,7 @@ function loadDB() {
   return dbCache;
 }
 
-function saveDB(data: any) {
+function saveDB(data: DBStructure): void {
   dbCache = data;
   fs.writeFile(dbPath, JSON.stringify(data, null, 2), "utf-8", (err) => {
     if (err) {
@@ -231,7 +232,7 @@ app.post("/api/auth/signup", (req, res) => {
   }
 
   const db = loadDB();
-  const existing = db.users.find((u: any) => u.email.toLowerCase() === email.toLowerCase());
+  const existing = db.users.find((u) => u.email.toLowerCase() === email.toLowerCase());
   if (existing) {
     return res.status(400).json({ error: "User with this email already exists" });
   }
@@ -249,7 +250,7 @@ app.post("/api/auth/signup", (req, res) => {
     badgeIds: ["badge-1"],
     points: 100, // starting points
     completedChallenges: [],
-    role: "user",
+    role: "user" as const,
     gender: gender ? sanitizeInput(gender) : "Not Specified"
   };
 
@@ -287,7 +288,7 @@ app.post("/api/auth/login", (req, res) => {
   const db = loadDB();
   const hashedPassword = hashPassword(password);
   const user = db.users.find(
-    (u: any) => u.email.toLowerCase() === email.toLowerCase() && u.password === hashedPassword
+    (u) => u.email.toLowerCase() === email.toLowerCase() && u.password === hashedPassword
   );
 
   if (!user) {
@@ -311,7 +312,7 @@ app.post("/api/auth/google", (req, res) => {
   }
 
   const db = loadDB();
-  let user = db.users.find((u: any) => u.email.toLowerCase() === email.toLowerCase());
+  let user = db.users.find((u) => u.email.toLowerCase() === email.toLowerCase());
 
   const sanitizedName = sanitizeInput(name);
   if (!user) {
@@ -363,7 +364,7 @@ app.post("/api/auth/forgot-password", (req, res) => {
 
 app.get("/api/user/profile/:userId", (req, res) => {
   const db = loadDB();
-  const user = db.users.find((u: any) => u.id === req.params.userId);
+  const user = db.users.find((u) => u.id === req.params.userId);
   if (!user) {
     return res.status(404).json({ error: "User not found" });
   }
@@ -379,7 +380,7 @@ app.post("/api/user/update-profile", (req, res) => {
   }
 
   const db = loadDB();
-  const userIdx = db.users.findIndex((u: any) => u.id === id);
+  const userIdx = db.users.findIndex((u) => u.id === id);
   if (userIdx === -1) {
     return res.status(404).json({ error: "User not found" });
   }
@@ -389,7 +390,7 @@ app.post("/api/user/update-profile", (req, res) => {
   if (gender) db.users[userIdx].gender = sanitizeInput(gender);
 
   // Also update leaderboard
-  const lbIdx = db.leaderboard.findIndex((e: any) => e.id === id);
+  const lbIdx = db.leaderboard.findIndex((e) => e.id === id);
   if (lbIdx !== -1) {
     if (name) db.leaderboard[lbIdx].name = db.users[userIdx].name;
   }
@@ -400,7 +401,7 @@ app.post("/api/user/update-profile", (req, res) => {
 });
 
 // Python integration runner
-function runPythonCalculator(inputs: any): Promise<any> {
+function runPythonCalculator(inputs: CarbonInputs): Promise<CarbonResult> {
   return new Promise((resolve, reject) => {
     try {
       const py = spawn("python3", ["calculator.py"]);
@@ -437,7 +438,7 @@ function runPythonCalculator(inputs: any): Promise<any> {
 }
 
 // Static baseline calculator formulas + dynamic suggestions fallback
-function calculateCarbonBaseline(inputs: any) {
+function calculateCarbonBaseline(inputs: CarbonInputs): CarbonResult {
   let transportScore = 0;
   let electricityScore = 0;
   let foodScore = 0;
@@ -551,7 +552,7 @@ function calculateCarbonBaseline(inputs: any) {
 }
 
 // Calculation cache to prevent spawning unnecessary child processes or invoking Gemini repeatedly
-const calculationCache = new Map<string, any>();
+const calculationCache = new Map<string, CarbonResult>();
 
 // Calculate Footprint API (comprehensive)
 app.post("/api/carbon/calculate", async (req, res) => {
@@ -655,9 +656,16 @@ Speak directly to a human and keep each comment to exactly one clear, profession
             result.suggestions = customSuggs;
           }
         }
-      } catch (err: any) {
+      } catch (err) {
+        const error = err as { status?: number; message?: string } | null;
         console.error("Gemini carbon recommendation override failed, defaulting to scientific backup suggestions.", err);
-        if (err?.status === 403 || err?.message?.includes("leaked") || err?.message?.includes("key") || err?.toString()?.includes("403") || err?.toString()?.includes("leaked")) {
+        if (
+          error?.status === 403 ||
+          error?.message?.includes("leaked") ||
+          error?.message?.includes("key") ||
+          String(err).includes("403") ||
+          String(err).includes("leaked")
+        ) {
           geminiFailed = true;
         }
       }
@@ -670,7 +678,7 @@ Speak directly to a human and keep each comment to exactly one clear, profession
   // Update user score in DB if user is authenticated
   if (userId) {
     const db = loadDB();
-    const userIdx = db.users.findIndex((u: any) => u.id === userId);
+    const userIdx = db.users.findIndex((u) => u.id === userId);
     if (userIdx !== -1) {
       db.users[userIdx].carbonScore = result.score;
       
@@ -707,7 +715,7 @@ Speak directly to a human and keep each comment to exactly one clear, profession
       db.environment.treesPlantedTotal += result.equivalents.treesPlanted;
 
       // Update leaderboard entry
-      const lbIdx = db.leaderboard.findIndex((e: any) => e.id === userId);
+      const lbIdx = db.leaderboard.findIndex((e) => e.id === userId);
       if (lbIdx !== -1) {
         db.leaderboard[lbIdx].carbonScore = result.score;
         db.leaderboard[lbIdx].points = db.users[userIdx].points;
@@ -749,9 +757,16 @@ app.post("/api/ai/chat", async (req, res) => {
       // Send greeting or historical items if needed, then fire current message
       const response = await chat.sendMessage({ message });
       return res.json({ text: response.text });
-    } catch (e: any) {
-      console.error("Gemini AI Chat session crashed, leveraging default backup assistant responses.", e);
-      if (e?.status === 403 || e?.message?.includes("leaked") || e?.message?.includes("key") || e?.toString()?.includes("403") || e?.toString()?.includes("leaked")) {
+    } catch (err) {
+      const error = err as { status?: number; message?: string } | null;
+      console.error("Gemini AI Chat session crashed, leveraging default backup assistant responses.", err);
+      if (
+        error?.status === 403 ||
+        error?.message?.includes("leaked") ||
+        error?.message?.includes("key") ||
+        String(err).includes("403") ||
+        String(err).includes("leaked")
+      ) {
         geminiFailed = true;
       }
     }
@@ -799,12 +814,12 @@ app.post("/api/challenges/complete", (req, res) => {
   }
 
   const db = loadDB();
-  const userIdx = db.users.findIndex((u: any) => u.id === userId);
+  const userIdx = db.users.findIndex((u) => u.id === userId);
   if (userIdx === -1) {
     return res.status(404).json({ error: "User not found" });
   }
 
-  const challengeIdx = db.challenges.findIndex((c: any) => c.id === challengeId);
+  const challengeIdx = db.challenges.findIndex((c) => c.id === challengeId);
   if (challengeIdx === -1) {
     return res.status(404).json({ error: "Challenge not found" });
   }
@@ -838,7 +853,7 @@ app.post("/api/challenges/complete", (req, res) => {
   }
 
   // Update leaderboard
-  const lbIdx = db.leaderboard.findIndex((e: any) => e.id === userId);
+  const lbIdx = db.leaderboard.findIndex((e) => e.id === userId);
   if (lbIdx !== -1) {
     db.leaderboard[lbIdx].points = user.points;
     db.leaderboard[lbIdx].ecoRank = user.ecoRank;
@@ -859,12 +874,12 @@ app.get("/api/environment/stats", (req, res) => {
 app.get("/api/admin/analytics", (req, res) => {
   const db = loadDB();
   const totalUsers = db.users.length;
-  const scoredUsers = db.users.filter((u: any) => u.carbonScore > 0);
+  const scoredUsers = db.users.filter((u) => u.carbonScore > 0);
   const avgCarbonScore = scoredUsers.length > 0 
-    ? parseFloat((scoredUsers.reduce((acc: number, u: any) => acc + u.carbonScore, 0) / scoredUsers.length).toFixed(2))
+    ? parseFloat((scoredUsers.reduce((acc: number, u) => acc + u.carbonScore, 0) / scoredUsers.length).toFixed(2))
     : 5.4;
 
-  const totalChallengesCompleted = db.users.reduce((acc: number, u: any) => acc + u.completedChallenges.length, 0);
+  const totalChallengesCompleted = db.users.reduce((acc: number, u) => acc + u.completedChallenges.length, 0);
 
   res.json({
     totalUsers,
@@ -906,12 +921,18 @@ app.post("/api/admin/challenges/add", (req, res) => {
     return res.status(400).json({ error: "Invalid points value" });
   }
 
+  const categorySanitized = sanitizeInput(category);
+  const validCategories = ["transport", "energy", "food", "waste"];
+  if (!validCategories.includes(categorySanitized)) {
+    return res.status(400).json({ error: "Invalid challenge category" });
+  }
+
   const db = loadDB();
-  const newChal = {
+  const newChal: Challenge = {
     id: generateId("challenge"),
     title: sanitizeInput(title),
     description: sanitizeInput(description),
-    category: sanitizeInput(category),
+    category: categorySanitized as 'transport' | 'energy' | 'food' | 'waste',
     points: parsedPoints,
     completedCount: 0
   };
@@ -926,7 +947,7 @@ app.post("/api/admin/leaderboard/edit", (req, res) => {
   if (!id) return res.status(400).json({ error: "Entity ID is required" });
 
   const db = loadDB();
-  const lbIdx = db.leaderboard.findIndex((e: any) => e.id === id);
+  const lbIdx = db.leaderboard.findIndex((e) => e.id === id);
   if (lbIdx === -1) return res.status(404).json({ error: "Leaderboard entry not found" });
 
   if (carbonScore !== undefined) {

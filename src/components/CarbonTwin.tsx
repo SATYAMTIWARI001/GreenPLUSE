@@ -89,10 +89,11 @@ export default function CarbonTwin({ user, baseScore, onBack }: CarbonTwinProps)
           {/* Slider 1: Solar power share */}
           <div className="flex flex-col gap-1.5">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-300 font-medium">Home Solar Generation Share</span>
+              <label htmlFor="solar-share-slider" className="text-slate-300 font-medium cursor-pointer">Home Solar Generation Share</label>
               <span className="font-mono text-cyan-400 font-bold">{solarShare}%</span>
             </div>
             <input
+              id="solar-share-slider"
               type="range"
               min="0"
               max="100"
@@ -108,10 +109,11 @@ export default function CarbonTwin({ user, baseScore, onBack }: CarbonTwinProps)
           {/* Slider 2: EV Transport commute replaced */}
           <div className="flex flex-col gap-1.5">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-300 font-medium">Active Mobility & EV Transition</span>
+              <label htmlFor="ev-commute-slider" className="text-slate-300 font-medium cursor-pointer">Active Mobility & EV Transition</label>
               <span className="font-mono text-cyan-400 font-bold">{evCommute}%</span>
             </div>
             <input
+              id="ev-commute-slider"
               type="range"
               min="0"
               max="100"
@@ -127,10 +129,11 @@ export default function CarbonTwin({ user, baseScore, onBack }: CarbonTwinProps)
           {/* Slider 3: Nutrition habit offsets */}
           <div className="flex flex-col gap-1.5">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-300 font-medium">Eco Nutritional Density</span>
+              <label htmlFor="diet-offset-slider" className="text-slate-300 font-medium cursor-pointer">Eco Nutritional Density</label>
               <span className="font-mono text-cyan-400 font-bold">Level {dietOffset} / 10</span>
             </div>
             <input
+              id="diet-offset-slider"
               type="range"
               min="0"
               max="10"
@@ -146,10 +149,11 @@ export default function CarbonTwin({ user, baseScore, onBack }: CarbonTwinProps)
           {/* Slider 4: Waste and Plastics setup */}
           <div className="flex flex-col gap-1.5">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-300 font-medium">Circular Material Sorting</span>
+              <label htmlFor="plastic-sorting-slider" className="text-slate-300 font-medium cursor-pointer">Circular Material Sorting</label>
               <span className="font-mono text-cyan-400 font-bold">Scale {plasticSorting} / 5</span>
             </div>
             <input
+              id="plastic-sorting-slider"
               type="range"
               min="1"
               max="5"
