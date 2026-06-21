@@ -1,14 +1,41 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, Sparkles, MessageSquare, AlertCircle, RefreshCw, HelpCircle, Trees } from "lucide-react";
+import { Bot, GraduationCap, Leaf, Lightbulb, Send, Sparkles, Utensils } from "lucide-react";
 import { ChatMessage } from "../types";
+
+const now = () => new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+const makeId = (prefix: string) => {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+    return `${prefix}-${crypto.randomUUID()}`;
+  }
+  return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+};
+
+const suggestedPrompts = [
+  {
+    label: "Explain footprint",
+    prompt: "Explain carbon footprint to an 8 year old",
+    icon: GraduationCap
+  },
+  {
+    label: "Save CO2 at home",
+    prompt: "How can I save 100 kg CO2 at home this month?",
+    icon: Lightbulb
+  },
+  {
+    label: "Food impact",
+    prompt: "Why does a vegetarian diet usually have a lower carbon impact?",
+    icon: Utensils
+  }
+];
 
 export default function PulseAssistant() {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "wel-1",
       sender: "assistant",
-      text: "Hi there! I'm Pulse, your eco-companion. Let's figure out how we can keep the planet clean and healthy together. Ask me any environmental or custom calculator questions!",
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      text: "Hi, I am Pulse. Ask me about your carbon score, daily eco choices, Indian commute options, home energy, waste, food impact, or how to use the calculator.",
+      timestamp: now()
     }
   ]);
 
@@ -16,20 +43,31 @@ export default function PulseAssistant() {
   const [loading, setLoading] = useState<boolean>(false);
   const [talking, setTalking] = useState<boolean>(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const talkingTimeoutRef = useRef<number | null>(null);
 
-  // Auto scroll down
+  const statusLabel = talking ? "Speaking" : loading ? "Formulating reply" : "Ready to guide";
+  const isSendDisabled = loading || inputVal.trim().length === 0;
+
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
+  useEffect(() => {
+    return () => {
+      if (talkingTimeoutRef.current) window.clearTimeout(talkingTimeoutRef.current);
+    };
+  }, []);
+
   const handleSendMessage = async () => {
     if (!inputVal.trim() || loading) return;
+    const trimmedInput = inputVal.trim().slice(0, 500);
 
     const userMsg: ChatMessage = {
-      id: "msg-" + Math.random().toString(36).substring(2, 9),
+      id: makeId("user"),
       sender: "user",
-      text: inputVal.trim(),
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      text: trimmedInput,
+      timestamp: now()
     };
 
     setMessages(prev => [...prev, userMsg]);
@@ -43,7 +81,7 @@ export default function PulseAssistant() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: userMsg.text,
-          history: messages.map(m => ({
+          history: messages.slice(-8).map(m => ({
             role: m.sender === "user" ? "user" : "model",
             parts: [{ text: m.text }]
           }))
@@ -54,10 +92,10 @@ export default function PulseAssistant() {
       const data = await response.json();
 
       const assistantMsg: ChatMessage = {
-        id: "msg-" + Math.random().toString(36).substring(2, 9),
+        id: makeId("assistant"),
         sender: "assistant",
-        text: data.text || "I apologize, but my environmental signal is slightly clouded right now! Try again shortly.",
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        text: data.text || "I could not form a clear answer just now. Try asking about transport, electricity, food, waste, or your score.",
+        timestamp: now()
       };
 
       setMessages(prev => [...prev, assistantMsg]);
@@ -65,23 +103,31 @@ export default function PulseAssistant() {
       setMessages(prev => [
         ...prev,
         {
-          id: "err-1",
+          id: makeId("error"),
           sender: "assistant",
-          text: "My green cloud is slightly offline. Unplugging high-grid appliances and clearing local queues usually helps!",
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          text: "I could not reach the AI service. You can still ask practical eco questions, and I will use the built-in guidance engine.",
+          timestamp: now()
         }
       ]);
     } finally {
       setLoading(false);
-      // Wait a few seconds before stopping talking visualization to mimic natural voice output
-      setTimeout(() => {
+      if (talkingTimeoutRef.current) window.clearTimeout(talkingTimeoutRef.current);
+      talkingTimeoutRef.current = window.setTimeout(() => {
         setTalking(false);
       }, 1500);
     }
   };
 
+  const choosePrompt = (prompt: string) => {
+    setInputVal(prompt);
+    inputRef.current?.focus();
+  };
+
   return (
-    <div className="glass-card rounded-2xl overflow-hidden flex flex-col h-[520px] shadow-xl bg-slate-900/40 relative border border-slate-700/35">
+    <section
+      className="glass-card rounded-2xl overflow-hidden flex flex-col h-[520px] shadow-xl bg-slate-900/40 relative border border-slate-700/35"
+      aria-label="Pulse Eco Agent"
+    >
       {/* Assistant Header */}
       <div className="p-4 bg-slate-950/60 border-b border-slate-800/80 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -127,29 +173,35 @@ export default function PulseAssistant() {
               <h3 className="font-display font-medium text-sm text-slate-100">Pulse Eco Agent</h3>
               <Sparkles className="h-3 w-3 text-emerald-400 animate-pulse" />
             </div>
-            <p className="text-[10px] text-slate-400 font-mono tracking-wider uppercase">
-              {talking ? "speaking..." : loading ? "formulating reply..." : "ready to guide"}
+            <p className="text-[10px] text-slate-400 font-mono tracking-wider uppercase" aria-live="polite">
+              {statusLabel}
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-1">
-          <span className="bg-emerald-950/55 border border-emerald-500/20 text-emerald-400 font-mono text-[10px] px-2.5 py-0.5 rounded-full">
-            GEMINI ENGINE
+          <span className="inline-flex items-center gap-1.5 bg-emerald-950/55 border border-emerald-500/20 text-emerald-400 font-mono text-[10px] px-2.5 py-0.5 rounded-full">
+            <Leaf className="h-3 w-3" />
+            GUIDE MODE
           </span>
         </div>
       </div>
 
       {/* Message Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-950/20 bg-grid-white scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
+      <div
+        className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-950/20 bg-grid-white scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent"
+        role="log"
+        aria-live="polite"
+        aria-label="Pulse conversation"
+      >
         {messages.map((msg) => (
           <div
             key={msg.id}
             className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} items-end gap-2.5`}
           >
             {msg.sender === "assistant" && (
-              <div className="h-6 w-6 rounded-full bg-slate-900 border border-slate-700 text-[10px] flex items-center justify-center text-teal-400 shrink-0 font-display">
-                P
+              <div className="h-6 w-6 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center text-teal-400 shrink-0">
+                <Bot className="h-3.5 w-3.5" />
               </div>
             )}
             
@@ -172,8 +224,8 @@ export default function PulseAssistant() {
         
         {loading && (
           <div className="flex justify-start items-center gap-2.5">
-            <div className="h-6 w-6 rounded-full bg-slate-900 border border-slate-700 text-[10px] flex items-center justify-center text-teal-400 shrink-0 select-none animate-spin">
-              P
+            <div className="h-6 w-6 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center text-teal-400 shrink-0 select-none animate-spin">
+              <Bot className="h-3.5 w-3.5" />
             </div>
             <div className="bg-slate-900/60 border border-slate-800/80 p-3 rounded-2xl rounded-bl-none flex items-center gap-1 text-slate-400">
               <span className="h-2 w-2 bg-emerald-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
@@ -187,24 +239,17 @@ export default function PulseAssistant() {
 
       {/* Suggested prompts line */}
       <div className="px-4 py-2 bg-slate-950/40 border-t border-slate-800/50 flex gap-2 overflow-x-auto whitespace-nowrap scrollbar-none">
-        <button
-          onClick={() => setInputVal("Explain carbon footprint to an 8 year old")}
-          className="text-[10px] bg-slate-900/80 hover:bg-slate-850 text-emerald-300 border border-emerald-500/10 hover:border-emerald-500/30 px-3 py-1.5 rounded-full transition"
-        >
-          🎓 Teach kid footprint
-        </button>
-        <button
-          onClick={() => setInputVal("How to save 100kg CO2 at home?")}
-          className="text-[10px] bg-slate-900/80 hover:bg-slate-850 text-emerald-300 border border-emerald-500/10 hover:border-emerald-500/30 px-3 py-1.5 rounded-full transition"
-        >
-          💡 Eco hacks
-        </button>
-        <button
-          onClick={() => setInputVal("Why does vegetarian diet have lower carbon?")}
-          className="text-[10px] bg-slate-900/80 hover:bg-slate-850 text-emerald-300 border border-emerald-500/10 hover:border-emerald-500/30 px-3 py-1.5 rounded-full transition"
-        >
-          🥗 Veggie impacts
-        </button>
+        {suggestedPrompts.map(({ label, prompt, icon: Icon }) => (
+          <button
+            key={prompt}
+            type="button"
+            onClick={() => choosePrompt(prompt)}
+            className="inline-flex items-center gap-1.5 text-[10px] bg-slate-900/80 hover:bg-slate-800 text-emerald-300 border border-emerald-500/10 hover:border-emerald-500/30 px-3 py-1.5 rounded-full transition"
+          >
+            <Icon className="h-3 w-3" />
+            {label}
+          </button>
+        ))}
       </div>
 
       {/* Form Input Footer */}
@@ -214,21 +259,27 @@ export default function PulseAssistant() {
           handleSendMessage();
         }}
         className="p-3.5 bg-slate-950/80 border-t border-slate-800 flex gap-2"
+        aria-label="Ask Pulse Eco Agent"
       >
         <input
+          ref={inputRef}
           type="text"
           value={inputVal}
-          onChange={(e) => setInputVal(e.target.value)}
-          placeholder="Ask Pulse (e.g. smart thermostats, offset offsets...)"
+          onChange={(e) => setInputVal(e.target.value.slice(0, 500))}
+          placeholder="Ask about your score, commute, energy, food, or waste..."
           className="flex-1 bg-slate-900 border border-slate-800 focus:border-emerald-500/50 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none transition font-sans"
+          aria-label="Message for Pulse"
+          maxLength={500}
         />
         <button
           type="submit"
-          className="bg-emerald-600 hover:bg-emerald-500 text-white p-2.5 rounded-xl border border-emerald-400/20 active:scale-95 transition-all flex items-center justify-center shrink-0 cursor-pointer"
+          disabled={isSendDisabled}
+          aria-label="Send message to Pulse"
+          className="bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed text-white p-2.5 rounded-xl border border-emerald-400/20 active:scale-95 transition-all flex items-center justify-center shrink-0 cursor-pointer"
         >
           <Send className="h-4 w-4" />
         </button>
       </form>
-    </div>
+    </section>
   );
 }

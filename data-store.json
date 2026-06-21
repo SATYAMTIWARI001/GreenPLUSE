@@ -918,6 +918,40 @@
       "completedChallenges": [],
       "role": "user",
       "gender": "Not Specified"
+    },
+    {
+      "id": "user-tdx3n28",
+      "email": "guest-biecoy7@pulse.eco",
+      "name": "Carbon Zero #912",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Carbon Zero #912",
+      "createdAt": "2026-06-21T10:44:26.747Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
+    },
+    {
+      "id": "user-lp03mxa",
+      "email": "guest-wpi11fe@pulse.eco",
+      "name": "Eco Maverick #933",
+      "password": "password123",
+      "avatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=Eco Maverick #933",
+      "createdAt": "2026-06-21T10:44:26.749Z",
+      "carbonScore": 0,
+      "ecoRank": "Beginner Eco Hero",
+      "badgeIds": [
+        "badge-1"
+      ],
+      "points": 100,
+      "completedChallenges": [],
+      "role": "user",
+      "gender": "Not Specified"
     }
   ],
   "leaderboard": [
@@ -1392,6 +1426,22 @@
       "carbonScore": 0,
       "points": 100,
       "type": "user"
+    },
+    {
+      "id": "user-tdx3n28",
+      "name": "Carbon Zero #912",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
+    },
+    {
+      "id": "user-lp03mxa",
+      "name": "Eco Maverick #933",
+      "ecoRank": "Beginner Eco Hero",
+      "carbonScore": 0,
+      "points": 100,
+      "type": "user"
     }
   ],
   "challenges": [
@@ -1456,6 +1506,6 @@
   "environment": {
     "treesPlantedTotal": 1872,
     "co2ReducedTotal": 24552,
-    "usersActiveCount": 362
+    "usersActiveCount": 364
   }
 }

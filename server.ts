@@ -9,7 +9,7 @@ import { spawn } from "child_process";
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json());
 
@@ -596,7 +596,7 @@ app.post("/api/ai/chat", async (req, res) => {
       const chat = ai.chats.create({
         model: "gemini-3.5-flash",
         config: {
-          systemInstruction: "You are 'Pulse', the intelligent, affectionate environmental speaking chatbot of GreenPulse AI platform. You translate complex concepts like ozone heating, climate indices, and smart grid systems into humble, fascinating, easily understandable terms for school kids and families. Maintain a remarkably encouraging, friendly posture. Motivate users to take organic, micro daily ecological steps and celebrate green goals. Always reply concisely within 3-4 sentences; avoid code blocks or nested formats unless requested."
+          systemInstruction: "You are Pulse, the GreenPulse AI eco guide. Give practical, India-aware sustainability advice for carbon footprint, transport, electricity, diet, waste, and the app calculator. Keep replies concise in 3-4 sentences, avoid exaggerated claims, use simple language, and end with one concrete next action when useful. Do not use code blocks unless the user asks for code."
         }
       });
 
@@ -616,24 +616,23 @@ app.post("/api/ai/chat", async (req, res) => {
   let textResponse = "";
 
   if (text.includes("kid") || text.includes("children") || text.includes("child") || text.includes("8 year")) {
-    textResponse = "Teaching kids about carbon is extremely fun! Think of a carbon footprint like the dirty boots we leave on the floor after playing outside. When we use electricity or drive big cars, our boots leave footprints on the Earth! We can wash those footprints away by planting trees, cycling, and turning off the TV when we're done.";
+    textResponse = "A carbon footprint is like an invisible trail left by the energy we use. Cars, lights, ACs, food, and waste can all add to that trail. A child can reduce it by switching off unused lights, walking short distances, carrying a bottle, and wasting less food.";
   } else if (text.includes("how to save") || text.includes("reduce") || text.includes("cut") || text.includes("hack") || text.includes("save co2")) {
-    textResponse = "To save CO₂ at home, start with simple daily habits: unplug standby chargers, dry your laundry naturally in the warm sun, and configure your air conditioning thermostat 2 degrees higher (like 24°C). These minor eco-hacks prevent up to 100kg of emissions weekly and lower your utility bills instantly!";
+    textResponse = "Start with the biggest daily levers: use public transport or carpool twice a week, set AC near 24-26°C, switch off standby appliances, and reduce food waste. If you use the GreenPulse calculator after each change, you can see which habit moves your score most. Pick one transport habit and one electricity habit for the next seven days.";
   } else if (text.includes("veg") || text.includes("diet") || text.includes("meat") || text.includes("eat") || text.includes("food") || text.includes("protein")) {
-    textResponse = "Plant-based diets have a significantly lower carbon footprint because growing crops requires 15 times less land & water than livestock farming! By cutting back on red meats and adopting plant-based ingredients even one day a week, you can reduce your personal kitchen emissions by over 50%.";
+    textResponse = "Vegetarian meals usually have a lower carbon impact because pulses, grains, vegetables, and seasonal produce need fewer resources than meat-heavy meals. In India, dal, chana, rajma, paneer in moderation, millets, and local vegetables are practical low-carbon choices. Try one extra plant-forward day each week and track the change in your food score.";
   } else if (text.includes("transport") || text.includes("car") || text.includes("cycle") || text.includes("commute") || text.includes("bus") || text.includes("metro")) {
-    textResponse = "Commutes are the largest driver of private emissions! Shifting from high-emission gasoline cars to lightweight active transit, trains, or electric metro networks saves up to 80% carbon. Cycling and walking are even better as they produce exactly zero emissions!";
+    textResponse = "Transport can strongly affect your score because distance repeats every day. For short trips, walking or cycling is best; for city travel, bus, metro, train, and carpooling usually beat solo car rides. Try replacing two solo commute days this week and rerun the calculator.";
   } else if (text.includes("plastic") || text.includes("waste") || text.includes("recycl") || text.includes("bin")) {
-    textResponse = "Single-use plastics are produced from petrochemicals that release toxic emissions, and they clog up natural waterways. By switching to reusable textile bags and sorting packaging into clean recyclables, you establish circular life-cycles that keep our oceans clean!";
+    textResponse = "Waste reduction starts with separation: keep wet waste, dry recyclables, and reject waste apart. Carrying a bottle, cloth bag, and lunch box cuts many single-use items before they enter the bin. Your next useful step is to set up two clearly labeled bins at home.";
   } else if (text.includes("electric") || text.includes("grid") || text.includes("ac") || text.includes("power") || text.includes("solar")) {
-    textResponse = "Our home electricity is typically generated by burning fossil fuels like coal, which releases heavy carbon. By setting AC thermostats higher, adopting LED bulbs, and utilizing daylight instead of electric fixtures, we directly prevent coal burning from heating up the atmosphere!";
+    textResponse = "Electricity emissions depend on how much power you use and how clean your grid is. AC hours, heating, older appliances, and standby power are common hidden loads. Set AC to 24-26°C, use fans when possible, switch to LEDs, and turn appliances off at the wall.";
   } else {
     const botAnswers = [
-      "Fantastic environmental question! Actively minimizing household heat pumps, carbon transport footprints, and segregating polymer materials makes you an everyday Earth hero.",
-      "Did you know that simple organic habits like unplugging your active laptop charger can dynamically reduce localized grid overhead carbon by up to 5kg weekly?",
-      "Every plant or potted herb added to home windows acts as a micro carbon sink, transforming heavy greenhouse components into beautiful breathing oxygen!",
-      "Our Green challenges have yielded over 20 metric tons of atmospheric offsets community-wide! Try marking today's Walking challenge complete to secure your rank booster.",
-      "Pulse is right here with you! Let's build micro solar discipline by shutting down standby computing terminals right now!"
+      "Ask me about transport, electricity, diet, waste, or how to improve your GreenPulse carbon score. I can help turn a broad goal into one small habit you can do today.",
+      "A good starting point is your most repeated habit: daily commute, AC use, food waste, or single-use plastic. Choose one, reduce it for a week, and compare your calculator score.",
+      "The strongest eco plans are specific and measurable. Tell me your city, commute style, AC hours, or diet pattern, and I will suggest a practical next step.",
+      "If you are unsure where to begin, run the calculator once, then ask me about the highest section in your breakdown. That keeps the advice focused on your real impact."
     ];
     textResponse = botAnswers[Math.floor(Math.random() * botAnswers.length)];
   }
