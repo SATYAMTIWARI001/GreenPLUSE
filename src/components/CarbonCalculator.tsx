@@ -194,10 +194,11 @@ export default function CarbonCalculator({ user, onCalculationCompleted, onBack,
                   {/* Distance Input */}
                   <div className="flex flex-col gap-1.5">
                     <div className="flex justify-between text-xs text-slate-450">
-                      <span className="text-slate-400 font-sans">Commute Distance</span>
+                      <label htmlFor="distance-slider" className="text-slate-400 font-sans cursor-pointer">Commute Distance</label>
                       <span className="font-mono text-emerald-400 font-semibold">{distance} km / day</span>
                     </div>
                     <input
+                      id="distance-slider"
                       type="range"
                       min="0"
                       max="150"
@@ -210,8 +211,9 @@ export default function CarbonCalculator({ user, onCalculationCompleted, onBack,
                   {/* Fuel type - shows conditionally for car owners */}
                   {vehicle === 'car' && (
                     <div className="flex flex-col gap-1.5 animate-pulse">
-                      <label className="text-xs text-slate-400 font-sans">Select fuel type used</label>
+                      <label htmlFor="fuel-type" className="text-xs text-slate-400 font-sans cursor-pointer">Select fuel type used</label>
                       <select
+                        id="fuel-type"
                         value={fuel}
                         onChange={(e) => setFuel(e.target.value as any)}
                         className="bg-slate-950 text-xs border border-slate-800 rounded-xl p-2 focus:border-emerald-500/50 text-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
@@ -239,10 +241,11 @@ export default function CarbonCalculator({ user, onCalculationCompleted, onBack,
                   {/* AC and Fan sliders */}
                   <div className="flex flex-col gap-1.5">
                     <div className="flex justify-between text-xs font-sans text-slate-400">
-                      <span>Air Conditioner (AC) hours</span>
+                      <label htmlFor="ac-hours" className="text-xs font-sans text-slate-400 cursor-pointer">Air Conditioner (AC) hours</label>
                       <span className="font-mono text-emerald-400">{acHours} hrs</span>
                     </div>
                     <input
+                      id="ac-hours"
                       type="range"
                       min="0"
                       max="24"
@@ -254,10 +257,11 @@ export default function CarbonCalculator({ user, onCalculationCompleted, onBack,
 
                   <div className="flex flex-col gap-1.5">
                     <div className="flex justify-between text-xs font-sans text-slate-400">
-                      <span>Fans hours</span>
+                      <label htmlFor="fan-hours" className="text-xs font-sans text-slate-400 cursor-pointer">Fans hours</label>
                       <span className="font-mono text-emerald-400">{fanHours} hrs</span>
                     </div>
                     <input
+                      id="fan-hours"
                       type="range"
                       min="0"
                       max="24"
@@ -270,10 +274,11 @@ export default function CarbonCalculator({ user, onCalculationCompleted, onBack,
                   {/* TV and Computer sliders */}
                   <div className="flex flex-col gap-1.5">
                     <div className="flex justify-between text-xs font-sans text-slate-400">
-                      <span>Active Computer / Console usage</span>
+                      <label htmlFor="computer-hours" className="text-xs font-sans text-slate-400 cursor-pointer">Active Computer / Console usage</label>
                       <span className="font-mono text-emerald-400">{computerHours} hrs</span>
                     </div>
                     <input
+                      id="computer-hours"
                       type="range"
                       min="0"
                       max="24"
@@ -285,10 +290,11 @@ export default function CarbonCalculator({ user, onCalculationCompleted, onBack,
 
                   <div className="flex flex-col gap-1.5">
                     <div className="flex justify-between text-xs font-sans text-slate-400">
-                      <span>TV screen viewing</span>
+                      <label htmlFor="tv-hours" className="text-xs font-sans text-slate-400 cursor-pointer">TV screen viewing</label>
                       <span className="font-mono text-emerald-400">{tvHours} hrs</span>
                     </div>
                     <input
+                      id="tv-hours"
                       type="range"
                       min="0"
                       max="24"
@@ -364,10 +370,11 @@ export default function CarbonCalculator({ user, onCalculationCompleted, onBack,
 
                 <div className="flex flex-col gap-1.5">
                   <div className="flex justify-between text-xs font-sans text-slate-400">
-                    <span>Plastics & Single-use wrappers usage</span>
+                    <label htmlFor="plastic-scale" className="text-xs font-sans text-slate-400 cursor-pointer">Plastics & Single-use wrappers usage</label>
                     <span className="font-mono text-emerald-300">Level {plasticScale} / 5</span>
                   </div>
                   <input
+                    id="plastic-scale"
                     type="range"
                     min="1"
                     max="5"
@@ -382,7 +389,7 @@ export default function CarbonCalculator({ user, onCalculationCompleted, onBack,
                 </div>
 
                 <div className="flex flex-col gap-2.5 mt-2">
-                  <label className="text-xs text-slate-400 font-sans">Describe household recycling efforts</label>
+                  <span className="text-xs text-slate-400 font-sans">Describe household recycling efforts</span>
                   <div className="grid grid-cols-3 gap-2">
                     {[
                       { id: 'none', label: 'Landfill base' },
@@ -391,6 +398,7 @@ export default function CarbonCalculator({ user, onCalculationCompleted, onBack,
                     ].map((idx) => (
                       <button
                         key={idx.id}
+                        type="button"
                         onClick={() => setRecycling(idx.id as any)}
                         className={`p-2 rounded-xl border cursor-pointer text-center text-xs transition ${
                           recycling === idx.id
@@ -406,10 +414,11 @@ export default function CarbonCalculator({ user, onCalculationCompleted, onBack,
 
                 <div className="flex flex-col gap-1.5 mt-1">
                   <div className="flex justify-between text-xs font-sans text-slate-400">
-                    <span>Estimate food peel and edible parts waste</span>
+                    <label htmlFor="food-waste-scale" className="text-xs font-sans text-slate-400 cursor-pointer">Estimate food peel and edible parts waste</label>
                     <span className="font-mono text-amber-500">Scale {foodWaste} / 5</span>
                   </div>
                   <input
+                    id="food-waste-scale"
                     type="range"
                     min="1"
                     max="5"

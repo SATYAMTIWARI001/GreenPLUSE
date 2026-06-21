@@ -5,6 +5,7 @@ import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
 import { spawn } from "child_process";
+import crypto from "crypto";
 
 dotenv.config();
 
@@ -12,6 +13,40 @@ const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json());
+
+// Security middleware to set standard headers
+app.use((req, res, next) => {
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https:;"
+  );
+  next();
+});
+
+// Password Hashing configuration
+const PASSWORD_SALT = "greenpulse_salt_2026";
+function hashPassword(password: string): string {
+  return crypto.createHmac("sha256", PASSWORD_SALT).update(password).digest("hex");
+}
+
+// XSS Sanitizer for input strings
+function sanitizeInput(str: string): string {
+  if (typeof str !== "string") return str;
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;");
+}
+
+// Secure ID generator using crypto
+function generateId(prefix: string): string {
+  return `${prefix}-${crypto.randomBytes(4).toString("hex")}`;
+}
 
 // Lazy Gemini Initialization
 let aiClient: GoogleGenAI | null = null;
@@ -42,14 +77,14 @@ function getGemini() {
 // Durable local server-side database path
 const dbPath = path.join(process.cwd(), "data-store.json");
 
-// Default Database Seed Data
+// Default Database Seed Data (pre-hashed with 53ca1e32ad82e329b2d1f33a214e1bbe7d4089acbcaa053289e2edb5c64be078 for password123)
 const defaultDB = {
   users: [
     {
       id: "admin-id",
       email: "satyam000108@gmail.com",
       name: "Satyam Tiwari",
-      password: "password123",
+      password: "53ca1e32ad82e329b2d1f33a214e1bbe7d4089acbcaa053289e2edb5c64be078",
       avatarUrl: "https://api.dicebear.com/7.x/bottts/svg?seed=Satyam%20Tiwari",
       createdAt: new Date().toISOString(),
       carbonScore: 4.1,
@@ -64,7 +99,7 @@ const defaultDB = {
       id: "user-elena",
       email: "sanika@pulse.eco",
       name: "Sanika Husan",
-      password: "password123",
+      password: "53ca1e32ad82e329b2d1f33a214e1bbe7d4089acbcaa053289e2edb5c64be078",
       avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sanika%20Husan",
       createdAt: new Date().toISOString(),
       carbonScore: 4.8,
@@ -78,7 +113,7 @@ const defaultDB = {
       id: "user-john",
       email: "abbas@pulse.eco",
       name: "Abbas Masood",
-      password: "password123",
+      password: "53ca1e32ad82e329b2d1f33a214e1bbe7d4089acbcaa053289e2edb5c64be078",
       avatarUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Abbas%20Masood",
       createdAt: new Date().toISOString(),
       carbonScore: 5.5,
@@ -117,31 +152,59 @@ const defaultDB = {
   }
 };
 
+// Database in-memory cache
+let dbCache: any = null;
+
 // Database utility functions
 function loadDB() {
+  if (dbCache) {
+    return dbCache;
+  }
   try {
     if (fs.existsSync(dbPath)) {
       const data = fs.readFileSync(dbPath, "utf-8");
-      return JSON.parse(data);
+      const db = JSON.parse(data);
+      let migrated = false;
+      if (db.users && Array.isArray(db.users)) {
+        db.users.forEach((u: any) => {
+          // Auto-migrate any plain text passwords
+          if (u.password && u.password.length !== 64) {
+            u.password = hashPassword(u.password);
+            migrated = true;
+          }
+        });
+      }
+      if (migrated) {
+        fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
+      }
+      dbCache = db;
+      return dbCache;
     }
   } catch (e) {
     console.error("Error reading database file, returning default database", e);
   }
-  // Write default db if not existing or broken
+  // Setup default db if not existing or broken
+  const initialDB = { ...defaultDB };
+  initialDB.users = initialDB.users.map((u: any) => ({
+    ...u,
+    password: u.password.length !== 64 ? hashPassword(u.password) : u.password
+  }));
   try {
-    fs.writeFileSync(dbPath, JSON.stringify(defaultDB, null, 2));
+    fs.writeFileSync(dbPath, JSON.stringify(initialDB, null, 2));
   } catch (e) {
     console.error("Could not write initial database file", e);
   }
-  return defaultDB;
+  dbCache = initialDB;
+  return dbCache;
 }
 
 function saveDB(data: any) {
-  try {
-    fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
-  } catch (e) {
-    console.error("Error writing database file", e);
-  }
+  dbCache = data;
+  fs.writeFile(dbPath, JSON.stringify(data, null, 2), "utf-8", (err) => {
+    if (err) {
+      console.error("Error writing database file asynchronously:", err);
+    }
+  });
 }
 
 // ---------------- API ENDPOINTS ----------------
@@ -158,18 +221,28 @@ app.post("/api/auth/signup", (req, res) => {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ error: "Invalid email format" });
+  }
+
+  if (password.length < 8) {
+    return res.status(400).json({ error: "Password must be at least 8 characters long" });
+  }
+
   const db = loadDB();
   const existing = db.users.find((u: any) => u.email.toLowerCase() === email.toLowerCase());
   if (existing) {
     return res.status(400).json({ error: "User with this email already exists" });
   }
 
+  const sanitizedName = sanitizeInput(name);
   const newUser = {
-    id: "user-" + Math.random().toString(36).substring(2, 9),
+    id: generateId("user"),
     email: email.toLowerCase(),
-    name,
-    password, // For client-side, we store simply as-is (this is a sandboxed developer prototype applet)
-    avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${name}`,
+    name: sanitizedName,
+    password: hashPassword(password),
+    avatarUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(sanitizedName)}`,
     createdAt: new Date().toISOString(),
     carbonScore: 0,
     ecoRank: "Beginner Eco Hero",
@@ -177,7 +250,7 @@ app.post("/api/auth/signup", (req, res) => {
     points: 100, // starting points
     completedChallenges: [],
     role: "user",
-    gender: gender || "Not Specified"
+    gender: gender ? sanitizeInput(gender) : "Not Specified"
   };
 
   db.users.push(newUser);
@@ -206,9 +279,15 @@ app.post("/api/auth/login", (req, res) => {
     return res.status(400).json({ error: "Email and password are required" });
   }
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ error: "Invalid email format" });
+  }
+
   const db = loadDB();
+  const hashedPassword = hashPassword(password);
   const user = db.users.find(
-    (u: any) => u.email.toLowerCase() === email.toLowerCase() && u.password === password
+    (u: any) => u.email.toLowerCase() === email.toLowerCase() && u.password === hashedPassword
   );
 
   if (!user) {
@@ -226,17 +305,23 @@ app.post("/api/auth/google", (req, res) => {
     return res.status(400).json({ error: "Email and Name are required for Google login" });
   }
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ error: "Invalid email format" });
+  }
+
   const db = loadDB();
   let user = db.users.find((u: any) => u.email.toLowerCase() === email.toLowerCase());
 
+  const sanitizedName = sanitizeInput(name);
   if (!user) {
     // Register as new Google user
     user = {
-      id: "user-" + Math.random().toString(36).substring(2, 9),
+      id: generateId("user"),
       email: email.toLowerCase(),
-      name,
-      password: "google-oauth-flow-" + Math.random().toString(36),
-      avatarUrl: avatarUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=${name}`,
+      name: sanitizedName,
+      password: hashPassword(generateId("google-oauth-flow")),
+      avatarUrl: avatarUrl || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(sanitizedName)}`,
       createdAt: new Date().toISOString(),
       carbonScore: 0,
       ecoRank: "Beginner Eco Hero",
@@ -269,6 +354,10 @@ app.post("/api/auth/forgot-password", (req, res) => {
   if (!email) {
     return res.status(400).json({ error: "Email is required" });
   }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ error: "Invalid email format" });
+  }
   res.json({ message: "A secure verification code has been dispatched to your email address." });
 });
 
@@ -295,14 +384,14 @@ app.post("/api/user/update-profile", (req, res) => {
     return res.status(404).json({ error: "User not found" });
   }
 
-  if (name) db.users[userIdx].name = name;
+  if (name) db.users[userIdx].name = sanitizeInput(name);
   if (avatarUrl) db.users[userIdx].avatarUrl = avatarUrl;
-  if (gender) db.users[userIdx].gender = gender;
+  if (gender) db.users[userIdx].gender = sanitizeInput(gender);
 
   // Also update leaderboard
   const lbIdx = db.leaderboard.findIndex((e: any) => e.id === id);
   if (lbIdx !== -1) {
-    if (name) db.leaderboard[lbIdx].name = name;
+    if (name) db.leaderboard[lbIdx].name = db.users[userIdx].name;
   }
 
   saveDB(db);
@@ -461,6 +550,9 @@ function calculateCarbonBaseline(inputs: any) {
   };
 }
 
+// Calculation cache to prevent spawning unnecessary child processes or invoking Gemini repeatedly
+const calculationCache = new Map<string, any>();
+
 // Calculate Footprint API (comprehensive)
 app.post("/api/carbon/calculate", async (req, res) => {
   const { userId, inputs } = req.body;
@@ -468,20 +560,70 @@ app.post("/api/carbon/calculate", async (req, res) => {
     return res.status(400).json({ error: "Missing calculation inputs" });
   }
 
-  // Calculate footprint using high-precision Python engine first, falling back to local JS
-  let result;
-  try {
-    result = await runPythonCalculator(inputs);
-  } catch (pyErr) {
-    console.warn("Python engine execution failed, running core JS calculation fallback instead:", pyErr);
-    result = calculateCarbonBaseline(inputs);
+  // Validate inputs
+  const {
+    vehicleType,
+    distancePerDay,
+    fuelType,
+    acHours,
+    fanHours,
+    tvHours,
+    computerHours,
+    mobileChargingSessions,
+    dietType,
+    plasticUseScale,
+    recyclingHabit,
+    foodWasteScale
+  } = inputs;
+
+  if (
+    typeof vehicleType !== "string" ||
+    typeof distancePerDay !== "number" ||
+    distancePerDay < 0 ||
+    distancePerDay > 1000
+  ) {
+    return res.status(400).json({ error: "Invalid distance or vehicle input values" });
   }
 
-  // Invoke Gemini for personalized, hyperrealistic premium recommendations if key available
-  const ai = getGemini();
-  if (ai) {
+  if (
+    typeof acHours !== "number" || acHours < 0 || acHours > 24 ||
+    typeof fanHours !== "number" || fanHours < 0 || fanHours > 24 ||
+    typeof tvHours !== "number" || tvHours < 0 || tvHours > 24 ||
+    typeof computerHours !== "number" || computerHours < 0 || computerHours > 24 ||
+    typeof mobileChargingSessions !== "number" || mobileChargingSessions < 0 || mobileChargingSessions > 100
+  ) {
+    return res.status(400).json({ error: "Invalid electricity hours or sessions" });
+  }
+
+  if (
+    typeof dietType !== "string" ||
+    typeof plasticUseScale !== "number" || plasticUseScale < 1 || plasticUseScale > 5 ||
+    typeof foodWasteScale !== "number" || foodWasteScale < 1 || foodWasteScale > 5 ||
+    typeof recyclingHabit !== "string"
+  ) {
+    return res.status(400).json({ error: "Invalid diet, waste or recycling input parameters" });
+  }
+
+  const cacheKey = JSON.stringify(inputs);
+  let result;
+
+  if (calculationCache.has(cacheKey)) {
+    console.log("Serving carbon calculation and recommendations from memory cache");
+    result = JSON.parse(JSON.stringify(calculationCache.get(cacheKey)));
+  } else {
+    // Calculate footprint using high-precision Python engine first, falling back to local JS
     try {
-      const prompt = `You are GreenPulse AI, a high-level environment scientist and personal carbon strategist.
+      result = await runPythonCalculator(inputs);
+    } catch (pyErr) {
+      console.warn("Python engine execution failed, running core JS calculation fallback instead:", pyErr);
+      result = calculateCarbonBaseline(inputs);
+    }
+
+    // Invoke Gemini for personalized, hyperrealistic premium recommendations if key available
+    const ai = getGemini();
+    if (ai) {
+      try {
+        const prompt = `You are GreenPulse AI, a high-level environment scientist and personal carbon strategist.
 Review these metrics carefully:
 - Transportation choice: ${inputs.vehicleType} travelling ${inputs.distancePerDay} km daily (fuel: ${inputs.fuelType || "N/A"}).
 - Hourly electric uses: AC: ${inputs.acHours}h, Fan: ${inputs.fanHours}h, Computer: ${inputs.computerHours}h, TV: ${inputs.tvHours}h.
@@ -499,26 +641,30 @@ Speak directly to a human and keep each comment to exactly one clear, profession
   "waste": ["sentence 1", "sentence 2"]
 }`;
 
-      const aiResponse = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
-        contents: prompt,
-        config: {
-          responseMimeType: "application/json",
-        },
-      });
+        const aiResponse = await ai.models.generateContent({
+          model: "gemini-3.5-flash",
+          contents: prompt,
+          config: {
+            responseMimeType: "application/json",
+          },
+        });
 
-      if (aiResponse && aiResponse.text) {
-        const customSuggs = JSON.parse(aiResponse.text.trim());
-        if (customSuggs.transport && customSuggs.energy) {
-          result.suggestions = customSuggs;
+        if (aiResponse && aiResponse.text) {
+          const customSuggs = JSON.parse(aiResponse.text.trim());
+          if (customSuggs.transport && customSuggs.energy) {
+            result.suggestions = customSuggs;
+          }
+        }
+      } catch (err: any) {
+        console.error("Gemini carbon recommendation override failed, defaulting to scientific backup suggestions.", err);
+        if (err?.status === 403 || err?.message?.includes("leaked") || err?.message?.includes("key") || err?.toString()?.includes("403") || err?.toString()?.includes("leaked")) {
+          geminiFailed = true;
         }
       }
-    } catch (err: any) {
-      console.error("Gemini carbon recommendation override failed, defaulting to scientific backup suggestions.", err);
-      if (err?.status === 403 || err?.message?.includes("leaked") || err?.message?.includes("key") || err?.toString()?.includes("403") || err?.toString()?.includes("leaked")) {
-        geminiFailed = true;
-      }
     }
+
+    // Save to calculation cache
+    calculationCache.set(cacheKey, JSON.parse(JSON.stringify(result)));
   }
 
   // Update user score in DB if user is authenticated
@@ -737,9 +883,9 @@ app.post("/api/admin/announcements", (req, res) => {
 
   const db = loadDB();
   const newAnn = {
-    id: "ann-" + Math.random().toString(36).substring(2, 9),
-    title,
-    content,
+    id: generateId("ann"),
+    title: sanitizeInput(title),
+    content: sanitizeInput(content),
     createdAt: new Date().toISOString(),
     important: !!important
   };
@@ -755,13 +901,18 @@ app.post("/api/admin/challenges/add", (req, res) => {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
+  const parsedPoints = parseInt(points, 10);
+  if (isNaN(parsedPoints) || parsedPoints < 0 || parsedPoints > 1000) {
+    return res.status(400).json({ error: "Invalid points value" });
+  }
+
   const db = loadDB();
   const newChal = {
-    id: "challenge-" + Math.random().toString(36).substring(2, 9),
-    title,
-    description,
-    category,
-    points: parseInt(points, 10),
+    id: generateId("challenge"),
+    title: sanitizeInput(title),
+    description: sanitizeInput(description),
+    category: sanitizeInput(category),
+    points: parsedPoints,
     completedCount: 0
   };
 
@@ -778,8 +929,21 @@ app.post("/api/admin/leaderboard/edit", (req, res) => {
   const lbIdx = db.leaderboard.findIndex((e: any) => e.id === id);
   if (lbIdx === -1) return res.status(404).json({ error: "Leaderboard entry not found" });
 
-  if (carbonScore !== undefined) db.leaderboard[lbIdx].carbonScore = parseFloat(carbonScore);
-  if (points !== undefined) db.leaderboard[lbIdx].points = parseInt(points, 10);
+  if (carbonScore !== undefined) {
+    const parsedScore = parseFloat(carbonScore);
+    if (isNaN(parsedScore) || parsedScore < 0 || parsedScore > 500) {
+      return res.status(400).json({ error: "Invalid carbon score value" });
+    }
+    db.leaderboard[lbIdx].carbonScore = parsedScore;
+  }
+
+  if (points !== undefined) {
+    const parsedPoints = parseInt(points, 10);
+    if (isNaN(parsedPoints) || parsedPoints < 0 || parsedPoints > 1000000) {
+      return res.status(400).json({ error: "Invalid points value" });
+    }
+    db.leaderboard[lbIdx].points = parsedPoints;
+  }
 
   saveDB(db);
   res.json({ message: "Leaderboard parameters synchronized successfully", entry: db.leaderboard[lbIdx] });
@@ -796,7 +960,14 @@ async function serveApp() {
     console.log("Vite middleware mounted successfully (Dev mode)");
   } else {
     const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
+    app.use(
+      express.static(distPath, {
+        maxAge: "1d",
+        setHeaders: (res) => {
+          res.setHeader("Cache-Control", "public, max-age=86400");
+        }
+      })
+    );
     app.get("*", (req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
     });

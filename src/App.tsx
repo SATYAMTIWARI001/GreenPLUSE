@@ -296,12 +296,13 @@ export default function App() {
                         <input
                           type="text"
                           value={newNameVal}
+                          aria-label="Edit Eco-name"
                           onChange={(e) => setNewNameVal(e.target.value)}
                           onKeyDown={(e) => { if (e.key === 'Enter') saveUpdatedName(); }}
                           className="bg-slate-900 text-white text-[11px] rounded px-1.5 py-0.5 border border-slate-700 w-24 focus:outline-none"
                           autoFocus
                         />
-                        <button onClick={saveUpdatedName} className="text-[10px] text-emerald-400">Ok</button>
+                        <button type="button" onClick={saveUpdatedName} className="text-[10px] text-emerald-400">Ok</button>
                       </div>
                     ) : (
                       <div className="flex items-center gap-1">

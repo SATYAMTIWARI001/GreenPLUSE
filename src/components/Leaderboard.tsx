@@ -105,6 +105,7 @@ export default function Leaderboard({ onBack }: LeaderboardProps) {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder={`Search ${activeTab === 'user' ? "eco heroes" : activeTab === 'college' ? "institutes" : "municipal centers"}...`}
+          aria-label={`Search ${activeTab === 'user' ? "eco heroes" : activeTab === 'college' ? "institutes" : "municipal centers"}`}
           className="w-full bg-slate-950 border border-slate-800/80 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500/55 transition font-sans"
         />
       </div>

@@ -237,6 +237,7 @@ export default function AdminPanel({ onBack, showToast }: AdminPanelProps) {
                         <input
                           type="number"
                           placeholder="Score kg"
+                          aria-label="New carbon score"
                           value={newScore}
                           onChange={(e) => setNewScore(e.target.value)}
                           className="bg-slate-950 text-[10px] p-1.5 rounded border border-slate-800 text-white w-20"
@@ -244,11 +245,13 @@ export default function AdminPanel({ onBack, showToast }: AdminPanelProps) {
                         <input
                           type="number"
                           placeholder="Points"
+                          aria-label="New eco points"
                           value={newPoints}
                           onChange={(e) => setNewPoints(e.target.value)}
                           className="bg-slate-950 text-[10px] p-1.5 rounded border border-slate-800 text-white w-20"
                         />
                         <button
+                          type="button"
                           onClick={() => handleEditLeaderboard(entry.id)}
                           className="bg-emerald-600 hover:bg-emerald-500 text-white font-mono text-[10px] px-2.5 py-1.5 rounded cursor-pointer"
                         >
@@ -275,6 +278,7 @@ export default function AdminPanel({ onBack, showToast }: AdminPanelProps) {
                 <input
                   type="text"
                   placeholder="System Headline title"
+                  aria-label="System Headline title"
                   value={annTitle}
                   onChange={(e) => setAnnTitle(e.target.value)}
                   className="bg-slate-950 border border-slate-850/80 rounded-lg p-2 text-xs focus:outline-none focus:border-emerald-500 w-full text-white"
@@ -282,6 +286,7 @@ export default function AdminPanel({ onBack, showToast }: AdminPanelProps) {
                 />
                 <textarea
                   placeholder="Body explanation context..."
+                  aria-label="Body explanation context"
                   value={annContent}
                   onChange={(e) => setAnnContent(e.target.value)}
                   className="bg-slate-950 border border-slate-850/80 rounded-lg p-2 text-xs focus:outline-none focus:border-emerald-500 w-full text-white h-16 resize-none"
@@ -318,6 +323,7 @@ export default function AdminPanel({ onBack, showToast }: AdminPanelProps) {
                 <input
                   type="text"
                   placeholder="Eco challenge title"
+                  aria-label="Eco challenge title"
                   value={chalTitle}
                   onChange={(e) => setChalTitle(e.target.value)}
                   className="bg-slate-950 border border-slate-850/80 rounded-lg p-2 text-xs focus:outline-none focus:border-emerald-500 w-full text-white"
@@ -326,6 +332,7 @@ export default function AdminPanel({ onBack, showToast }: AdminPanelProps) {
                 <input
                   type="text"
                   placeholder="Short brief description"
+                  aria-label="Short brief description"
                   value={chalDesc}
                   onChange={(e) => setChalDesc(e.target.value)}
                   className="bg-slate-950 border border-slate-850/80 rounded-lg p-2 text-xs focus:outline-none focus:border-emerald-500 w-full text-white"
@@ -335,6 +342,7 @@ export default function AdminPanel({ onBack, showToast }: AdminPanelProps) {
                 <div className="grid grid-cols-2 gap-2">
                   <select
                     value={chalCategory}
+                    aria-label="Eco challenge category"
                     onChange={(e) => setChalCategory(e.target.value)}
                     className="bg-slate-950 text-xs border border-slate-850 rounded-lg p-2 focus:outline-none text-white"
                   >
@@ -347,6 +355,7 @@ export default function AdminPanel({ onBack, showToast }: AdminPanelProps) {
                   <input
                     type="number"
                     placeholder="Points (e.g. 50)"
+                    aria-label="Points count"
                     value={chalPoints}
                     onChange={(e) => setChalPoints(parseInt(e.target.value, 10))}
                     className="bg-slate-950 border border-slate-850/80 rounded-lg p-2 text-xs focus:outline-none focus:border-emerald-500 text-white"

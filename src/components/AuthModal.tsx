@@ -121,6 +121,7 @@ export default function AuthModal({ onAuthSuccess, onClose }: AuthModalProps) {
           
           <button
             onClick={onClose}
+            aria-label="Close authentication modal"
             className="p-1.5 text-slate-500 hover:text-slate-900 dark:hover:text-white rounded-lg hover:bg-slate-850/10 dark:hover:bg-slate-800/55 transition cursor-pointer"
           >
             <X className="h-4 w-4" />
@@ -145,10 +146,11 @@ export default function AuthModal({ onAuthSuccess, onClose }: AuthModalProps) {
           {isSignUp && !forgotMode && (
             <>
               <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] uppercase font-mono text-slate-500 dark:text-slate-400">FullName</label>
+                <label htmlFor="fullname-input" className="text-[10px] uppercase font-mono text-slate-500 dark:text-slate-400 cursor-pointer">FullName</label>
                 <div className="relative">
                   <UserIcon className="absolute left-3 top-2.5 h-4 w-4 text-slate-500" />
                   <input
+                    id="fullname-input"
                     type="text"
                     placeholder="e.g. Satyam Kumar"
                     value={name}
@@ -160,8 +162,9 @@ export default function AuthModal({ onAuthSuccess, onClose }: AuthModalProps) {
               </div>
 
               <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] uppercase font-mono text-slate-400">Gender Selection</label>
+                <label htmlFor="gender-select" className="text-[10px] uppercase font-mono text-slate-400 cursor-pointer">Gender Selection</label>
                 <select
+                  id="gender-select"
                   value={gender}
                   onChange={(e) => setGender(e.target.value)}
                   className="w-full bg-slate-950/5 dark:bg-slate-950 border border-slate-800/15 dark:border-slate-800 rounded-xl p-2 text-xs text-slate-900 dark:text-white focus:outline-none"
@@ -176,10 +179,11 @@ export default function AuthModal({ onAuthSuccess, onClose }: AuthModalProps) {
           )}
 
           <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] uppercase font-mono text-slate-500 dark:text-slate-400">Email Address</label>
+            <label htmlFor="email-input" className="text-[10px] uppercase font-mono text-slate-500 dark:text-slate-400 cursor-pointer">Email Address</label>
             <div className="relative">
               <Mail className="absolute left-3 top-2.5 h-4 w-4 text-slate-500" />
               <input
+                id="email-input"
                 type="email"
                 placeholder="eco@greenpulse.ai"
                 value={email}
@@ -192,10 +196,11 @@ export default function AuthModal({ onAuthSuccess, onClose }: AuthModalProps) {
 
           {!forgotMode && (
             <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] uppercase font-mono text-slate-500 dark:text-slate-400">Password</label>
+              <label htmlFor="password-input" className="text-[10px] uppercase font-mono text-slate-500 dark:text-slate-400 cursor-pointer">Password</label>
               <div className="relative">
                 <Lock className="absolute left-3 top-2.5 h-4 w-4 text-slate-500" />
                 <input
+                  id="password-input"
                   type="password"
                   placeholder="••••••••"
                   value={password}
