@@ -387,7 +387,7 @@ export default function Dashboard({ user, result, onReset, onUserUpdate, onBack,
           ].map((item) => (
             <button
               key={item.id}
-              onClick={() => setActiveCategory(item.id as any)}
+              onClick={() => setActiveCategory(item.id as 'transport' | 'energy' | 'food' | 'waste')}
               className={`py-2 px-1 text-center text-xs rounded-lg font-medium cursor-pointer transition ${
                 activeCategory === item.id
                   ? "bg-slate-900 border border-slate-700/60 text-emerald-3D shadow-sm"
@@ -449,7 +449,7 @@ export default function Dashboard({ user, result, onReset, onUserUpdate, onBack,
           ].map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setCodeTab(tab.id as any)}
+              onClick={() => setCodeTab(tab.id as 'python' | 'c' | 'arch')}
               className={`px-3 py-1.5 text-[11px] font-semibold rounded-lg cursor-pointer transition ${
                 codeTab === tab.id
                   ? "bg-slate-900 border border-slate-800 text-emerald-400 shadow-sm font-bold"

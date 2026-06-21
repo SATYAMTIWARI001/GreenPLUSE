@@ -7,10 +7,20 @@ interface ReceiptScannerProps {
   onRewardAwarded: (updatedUser: User) => void;
 }
 
+interface ScanResult {
+  fileName: string;
+  category: string;
+  co2Offset: number;
+  pointsAwarded: number;
+  note: string;
+  merchant: string;
+  serial: string;
+}
+
 export default function ReceiptScanner({ user, onRewardAwarded }: ReceiptScannerProps) {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const [scanning, setScanning] = useState<boolean>(false);
-  const [scanResult, setScanResult] = useState<any | null>(null);
+  const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 

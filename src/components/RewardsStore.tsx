@@ -20,9 +20,20 @@ interface RewardItem {
   badgeName: string;
 }
 
+interface CertificateItem {
+  id: string;
+  title: string;
+  description: string;
+  redeemedAt: string;
+  cost: number;
+  location: string;
+  badgeName: string;
+  serial: string;
+}
+
 export default function RewardsStore({ user, onPointsRedeemed, onBack, showToast }: RewardsStoreProps) {
   const [activeTab, setActiveTab] = useState<'store' | 'certificates'>('store');
-  const [redeemedCertificates, setRedeemedCertificates] = useState<any[]>([]);
+  const [redeemedCertificates, setRedeemedCertificates] = useState<CertificateItem[]>([]);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
   const availableRewards: RewardItem[] = [

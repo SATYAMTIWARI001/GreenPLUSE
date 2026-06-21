@@ -176,7 +176,7 @@ export default function CarbonCalculator({ user, onCalculationCompleted, onBack,
                     ].map((mode) => (
                       <button
                         key={mode.id}
-                        onClick={() => setVehicle(mode.id as any)}
+                        onClick={() => setVehicle(mode.id as CarbonInputs['vehicleType'])}
                         className={`p-2.5 rounded-xl border flex flex-col items-center gap-1.5 cursor-pointer text-center transition ${
                           vehicle === mode.id
                             ? "bg-emerald-600/10 border-emerald-500 text-slate-100"
@@ -215,7 +215,7 @@ export default function CarbonCalculator({ user, onCalculationCompleted, onBack,
                       <select
                         id="fuel-type"
                         value={fuel}
-                        onChange={(e) => setFuel(e.target.value as any)}
+                        onChange={(e) => setFuel(e.target.value as CarbonInputs['fuelType'])}
                         className="bg-slate-950 text-xs border border-slate-800 rounded-xl p-2 focus:border-emerald-500/50 text-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
                       >
                         <option value="petrol">Petrol (Standard)</option>
@@ -344,7 +344,7 @@ export default function CarbonCalculator({ user, onCalculationCompleted, onBack,
                     ].map((d) => (
                       <button
                         key={d.id}
-                        onClick={() => setDiet(d.id as any)}
+                        onClick={() => setDiet(d.id as CarbonInputs['dietType'])}
                         className={`p-3.5 rounded-xl border flex flex-col text-left gap-1 cursor-pointer transition ${
                           diet === d.id
                             ? "bg-emerald-600/10 border-emerald-500 text-slate-100"
@@ -399,7 +399,7 @@ export default function CarbonCalculator({ user, onCalculationCompleted, onBack,
                       <button
                         key={idx.id}
                         type="button"
-                        onClick={() => setRecycling(idx.id as any)}
+                        onClick={() => setRecycling(idx.id as CarbonInputs['recyclingHabit'])}
                         className={`p-2 rounded-xl border cursor-pointer text-center text-xs transition ${
                           recycling === idx.id
                             ? "bg-emerald-600/10 border-emerald-500 text-slate-100 font-semibold"
