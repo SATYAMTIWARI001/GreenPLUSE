@@ -117,5 +117,44 @@ class TestCarbonCalculator(unittest.TestCase):
         self.assertAlmostEqual(res["breakdown"]["electricity"], 18.98, places=1)
         self.assertAlmostEqual(res["score"], 25.58, places=1)
 
+    def test_empty_inputs_handling(self):
+        # Empty inputs should fall back to default calculations safely
+        res = calculate_carbon_baseline({})
+        self.assertIsNotNone(res)
+        self.assertIn("score", res)
+        self.assertIn("grade", res)
+
+    def test_extreme_distance_inputs(self):
+        inputs = {
+            "vehicleType": "car",
+            "fuelType": "petrol",
+            "distancePerDay": 1000000 # extremely high distance
+        }
+        res = calculate_carbon_baseline(inputs)
+        # 1000000 * 0.42 = 420000.0. Food (mixed) = 3.6, Waste defaults = 0.6. Total = 420004.2
+        self.assertGreaterEqual(res["score"], 420000.0)
+
+    def test_negative_inputs(self):
+        inputs = {
+            "vehicleType": "car",
+            "distancePerDay": -50, # negative distance
+            "acHours": -2,
+            "dietType": "vegan"
+        }
+        res = calculate_carbon_baseline(inputs)
+        # Even with negative inputs, check that it calculates without crashing
+        self.assertIsNotNone(res["score"])
+
+    def test_invalid_types_handling(self):
+        inputs = {
+            "vehicleType": "spaceship", # invalid vehicle
+            "dietType": "raw-carnivore", # invalid diet
+            "recyclingHabit": "everything" # invalid recycling
+        }
+        res = calculate_carbon_baseline(inputs)
+        # Check that it handles unrecognized categories gracefully by using fallbacks
+        self.assertIsNotNone(res["score"])
+        self.assertEqual(res["breakdown"]["transport"], 0.0)
+
 if __name__ == "__main__":
     unittest.main()

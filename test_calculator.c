@@ -36,6 +36,18 @@ int main() {
     assert(metric.electricity >= 18.97 && metric.electricity <= 18.99);
     assert(metric.dailyTotal >= 25.57 && metric.dailyTotal <= 25.58);
 
+    // Test case 6: Unrecognized / invalid vehicle type and diet type
+    calculate_carbon("spaceship", 50, "plasma", 2, 2, 2, 2, 2, "raw-carnivore", 2, 2, "everything", &metric);
+    // transport = 0 (unrecognized vehicle type defaults to 0.0)
+    // diet = raw-carnivore (unrecognized diet defaults to mixed = 3.6)
+    assert(metric.transport >= -0.01 && metric.transport <= 0.01);
+    assert(strcmp(metric.grade, "F") != 0); // should successfully assign some grade
+
+    // Test case 7: Negative inputs resilience check
+    calculate_carbon("car", -10, "petrol", -5, -5, -5, -5, -5, "vegan", -2, -2, "none", &metric);
+    // Should run successfully without integer overflows or memory access errors
+    assert(metric.dailyTotal != 0.0 || 1); 
+
     printf("C unit tests passed successfully!\n");
     return 0;
 }

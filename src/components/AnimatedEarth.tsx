@@ -28,6 +28,19 @@ export default function AnimatedEarth({ score }: AnimatedEarthProps) {
   const rotationSpeedRef = useRef(1);
   const isRotatingRef = useRef(true);
 
+  // Refs to prevent randomized position jumping on state transitions
+  const starsRef = useRef<{ x: number; y: number; size: number; alpha: number; speed: number }[]>([]);
+  const debrisRef = useRef<{ x: number; y: number; rx: number; ry: number; speed: number; size: number; color: string; angle: number }[]>([]);
+  const cloudsRef = useRef<{ cx: number; cy: number; radius: number; speed: number; offset: number }[]>([]);
+  const earthStateRef = useRef(earthState);
+  const currentStateValRef = useRef(
+    earthState === "HEALTHY" ? 0 : earthState === "MODERATE" ? 1 : 2
+  );
+
+  useEffect(() => {
+    earthStateRef.current = earthState;
+  }, [earthState]);
+
   useEffect(() => {
     rotationSpeedRef.current = rotationSpeed;
   }, [rotationSpeed]);
@@ -56,46 +69,52 @@ export default function AnimatedEarth({ score }: AnimatedEarthProps) {
 
     let animationFrameId: number;
     
-    // Setup starfield background
-    const stars: { x: number; y: number; size: number; alpha: number; speed: number }[] = [];
-    for (let i = 0; i < 75; i++) {
-       stars.push({
-         x: Math.random() * 540,
-         y: Math.random() * 540,
-         size: Math.random() * 1.5 + 0.5,
-         alpha: Math.random(),
-         speed: Math.random() * 0.015 + 0.003
-       });
+    // Setup persistent starfield background
+    if (starsRef.current.length === 0) {
+      for (let i = 0; i < 75; i++) {
+        starsRef.current.push({
+          x: Math.random() * 540,
+          y: Math.random() * 540,
+          size: Math.random() * 1.5 + 0.5,
+          alpha: Math.random(),
+          speed: Math.random() * 0.015 + 0.003
+        });
+      }
     }
+    const stars = starsRef.current;
 
-    // Floating micro-objects: birds or smoky particles
-    const debris: { x: number; y: number; rx: number; ry: number; speed: number; size: number; color: string; angle: number }[] = [];
-    for (let i = 0; i < 8; i++) {
-      debris.push({
-        x: 0,
-        y: 0,
-        rx: 225 + Math.random() * 85, // orbit radius X (increased scale of orbital path)
-        ry: 64 + Math.random() * 45,  // orbit radius Y (increased scale of orbital path)
-        speed: (Math.random() * 0.012 + 0.004) * (Math.random() > 0.5 ? 1 : -1),
-        size: Math.random() * 5 + 2.5,
-        color: "rgba(255, 255, 255, 0.8)",
-        angle: Math.random() * Math.PI * 2
-      });
+    // Persistent floating micro-objects: birds or smoky particles
+    if (debrisRef.current.length === 0) {
+      for (let i = 0; i < 8; i++) {
+        debrisRef.current.push({
+          x: 0,
+          y: 0,
+          rx: 225 + Math.random() * 85, // orbit radius X
+          ry: 64 + Math.random() * 45,  // orbit radius Y
+          speed: (Math.random() * 0.012 + 0.004) * (Math.random() > 0.5 ? 1 : -1),
+          size: Math.random() * 5 + 2.5,
+          color: "rgba(255, 255, 255, 0.8)",
+          angle: Math.random() * Math.PI * 2
+        });
+      }
     }
+    const debris = debrisRef.current;
 
-    // Micro-clouds
-    const cloudsArray: { cx: number; cy: number; radius: number; speed: number; offset: number }[] = [];
-    for (let i = 0; i < 15; i++) {
-      cloudsArray.push({
-        cx: Math.random() * 270 - 135,
-        cy: Math.random() * 240 - 120,
-        radius: Math.random() * 26 + 10,
-        speed: Math.random() * 0.004 + 0.001,
-        offset: Math.random() * Math.PI * 2
-      });
+    // Persistent micro-clouds
+    if (cloudsRef.current.length === 0) {
+      for (let i = 0; i < 15; i++) {
+        cloudsRef.current.push({
+          cx: Math.random() * 270 - 135,
+          cy: Math.random() * 240 - 120,
+          radius: Math.random() * 26 + 10,
+          speed: Math.random() * 0.004 + 0.001,
+          offset: Math.random() * Math.PI * 2
+        });
+      }
     }
+    const cloudsArray = cloudsRef.current;
 
-    // Procedural continents definition (list of simple bezier/circle structures on mapping grid)
+    // Procedural continents definition
     const scaleFactor = 1.80; // Scaled up to perfectly match the enlarged sphere
     const continents = [
       { cx: -45 * scaleFactor, cy: -15 * scaleFactor, r: 42 * scaleFactor },
@@ -107,14 +126,63 @@ export default function AnimatedEarth({ score }: AnimatedEarthProps) {
       { cx: 10 * scaleFactor, cy: 55 * scaleFactor, r: 18 * scaleFactor }
     ];
 
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+    const lerpColor = (c1: number[], c2: number[], t: number) => {
+      const r = Math.round(lerp(c1[0], c2[0], t));
+      const g = Math.round(lerp(c1[1], c2[1], t));
+      const b = Math.round(lerp(c1[2], c2[2], t));
+      return `rgb(${r}, ${g}, ${b})`;
+    };
+
+    const lerpColorAlpha = (c1: number[], c2: number[], a1: number, a2: number, t: number) => {
+      const r = Math.round(lerp(c1[0], c2[0], t));
+      const g = Math.round(lerp(c1[1], c2[1], t));
+      const b = Math.round(lerp(c1[2], c2[2], t));
+      const a = lerp(a1, a2, t);
+      return `rgba(${r}, ${g}, ${b}, ${a})`;
+    };
+
     const resizeAndRender = () => {
       let width = 540;  // Enlarge viewport
       let height = 540; // Enlarge viewport
       canvas.width = width;
       canvas.height = height;
-
+ 
       const render = () => {
         ctx.clearRect(0, 0, width, height);
+
+        // Smooth state transitions: LERP currentStateValRef towards targetStateVal (HEALTHY=0, MODERATE=1, POLLUTED=2)
+        const targetStateVal = earthStateRef.current === "HEALTHY" ? 0 : earthStateRef.current === "MODERATE" ? 1 : 2;
+        currentStateValRef.current += (targetStateVal - currentStateValRef.current) * 0.05;
+
+        // Dynamic state interpolation helpers
+        const getVal = (vHealthy: number, vModerate: number, vPolluted: number) => {
+          const t = currentStateValRef.current;
+          if (t <= 1) {
+            return lerp(vHealthy, vModerate, t);
+          } else {
+            return lerp(vModerate, vPolluted, t - 1);
+          }
+        };
+
+        const getColor = (cHealthy: number[], cModerate: number[], cPolluted: number[]) => {
+          const t = currentStateValRef.current;
+          if (t <= 1) {
+            return lerpColor(cHealthy, cModerate, t);
+          } else {
+            return lerpColor(cModerate, cPolluted, t - 1);
+          }
+        };
+
+        const getColorAlpha = (cHealthy: number[], cModerate: number[], cPolluted: number[], aHealthy: number, aModerate: number, aPolluted: number) => {
+          const t = currentStateValRef.current;
+          if (t <= 1) {
+            return lerpColorAlpha(cHealthy, cModerate, aHealthy, aModerate, t);
+          } else {
+            return lerpColorAlpha(cModerate, cPolluted, aModerate, aPolluted, t - 1);
+          }
+        };
 
         // Slow auto-rotation when not interacting and enabled
         if (!isDraggingRef.current && isRotatingRef.current) {
@@ -146,41 +214,33 @@ export default function AnimatedEarth({ score }: AnimatedEarthProps) {
         const cy = (height / 2) + floatY;
         const radius = 176; // Enlarged sphere radius (up from 142) for massive prominence
 
-        // 2. Realistic Atmosphere Glow base
+        // 2. Realistic Atmosphere Glow base (smoothly lerped)
         const atmosphereGrad = ctx.createRadialGradient(cx, cy, radius - 6, cx, cy, radius + 54);
-        if (earthState === "HEALTHY") {
-          atmosphereGrad.addColorStop(0, "rgba(16, 185, 129, 0.28)");
-          atmosphereGrad.addColorStop(0.5, "rgba(56, 189, 248, 0.16)");
-          atmosphereGrad.addColorStop(1, "rgba(56, 189, 248, 0)");
-        } else if (earthState === "MODERATE") {
-          atmosphereGrad.addColorStop(0, "rgba(245, 158, 11, 0.2)");
-          atmosphereGrad.addColorStop(0.5, "rgba(234, 179, 8, 0.09)");
-          atmosphereGrad.addColorStop(1, "rgba(100, 116, 139, 0)");
-        } else {
-          atmosphereGrad.addColorStop(0, "rgba(239, 68, 68, 0.35)");
-          atmosphereGrad.addColorStop(0.4, "rgba(244, 63, 94, 0.18)");
-          atmosphereGrad.addColorStop(1, "rgba(127, 29, 29, 0)");
-        }
+        const stop0 = getColorAlpha([16, 185, 129], [245, 158, 11], [239, 68, 68], 0.28, 0.2, 0.35);
+        const stop05 = getColorAlpha([56, 189, 248], [234, 179, 8], [244, 63, 94], 0.16, 0.09, 0.18);
+        const stop1 = getColorAlpha([56, 189, 248], [100, 116, 139], [127, 29, 29], 0, 0, 0);
+        const stop05Idx = getVal(0.5, 0.5, 0.4);
+
+        atmosphereGrad.addColorStop(0, stop0);
+        atmosphereGrad.addColorStop(stop05Idx, stop05);
+        atmosphereGrad.addColorStop(1, stop1);
+
         ctx.fillStyle = atmosphereGrad;
         ctx.beginPath();
         ctx.arc(cx, cy, radius + 54, 0, Math.PI * 2);
         ctx.fill();
 
-        // 3. Earth sphere background base (Ocean)
+        // 3. Earth sphere background base (Ocean) (smoothly lerped)
         const sphereGrad = ctx.createRadialGradient(cx - 50, cy - 50, 36, cx, cy, radius);
-        if (earthState === "HEALTHY") {
-          sphereGrad.addColorStop(0, "#0284c7"); // Clean vibrant sea-blue
-          sphereGrad.addColorStop(0.75, "#0369a1");
-          sphereGrad.addColorStop(1, "#0f172a");
-        } else if (earthState === "MODERATE") {
-          sphereGrad.addColorStop(0, "#0369a1");
-          sphereGrad.addColorStop(0.7, "#1e293b");
-          sphereGrad.addColorStop(1, "#0c111e");
-        } else {
-          sphereGrad.addColorStop(0, "#543C2E"); // Muddy brown industrial oceans
-          sphereGrad.addColorStop(0.65, "#2D1D15");
-          sphereGrad.addColorStop(1, "#0e0d0c");
-        }
+        const ocean0 = getColor([2, 132, 199], [3, 105, 161], [84, 60, 46]);
+        const oceanMid = getColor([3, 105, 161], [30, 41, 59], [45, 29, 21]);
+        const ocean1 = getColor([15, 23, 42], [12, 17, 30], [14, 13, 12]);
+        const oceanMidIdx = getVal(0.75, 0.7, 0.65);
+
+        sphereGrad.addColorStop(0, ocean0);
+        sphereGrad.addColorStop(oceanMidIdx, oceanMid);
+        sphereGrad.addColorStop(1, ocean1);
+
         ctx.fillStyle = sphereGrad;
         ctx.beginPath();
         ctx.arc(cx, cy, radius, 0, Math.PI * 2);
@@ -192,7 +252,10 @@ export default function AnimatedEarth({ score }: AnimatedEarthProps) {
         ctx.arc(cx, cy, radius, 0, Math.PI * 2);
         ctx.clip();
 
-        // 4. Draw Continents with horizontal wrapping rotation & vertical tilt projection
+        // 4. Draw Continents with horizontal wrapping rotation & vertical tilt projection (smoothly lerped)
+        const contColor = getColor([16, 185, 129], [180, 83, 9], [90, 58, 34]);
+        const forestAlpha = Math.max(0, 1 - currentStateValRef.current);
+
         continents.forEach((cont) => {
           const initialX = cont.cx;
           // Continents slide laterally based on rotation Angle wrapping modulo width
@@ -202,32 +265,22 @@ export default function AnimatedEarth({ score }: AnimatedEarthProps) {
           const tiltOffsetY = Math.sin(verticalTiltRef.current) * cont.cx * 0.42;
           const finalY = cy + cont.cy + tiltOffsetY;
 
-          // Continents custom color scheme
-          let contColor = "#10b981"; // Healthy bright green
-          if (earthState === "MODERATE") {
-            contColor = "#b45309"; // Autumn dirt/faded green
-          } else if (earthState === "POLLUTED") {
-            contColor = "#5a3a22"; // Factory soot/decayed soil
-          }
-
           ctx.fillStyle = contColor;
           ctx.beginPath();
           ctx.arc(cx + rx, finalY, cont.r, 0, Math.PI * 2);
           ctx.fill();
 
-          // Sub-green forest overlays for depth representation (healthy only)
-          if (earthState === "HEALTHY") {
-            ctx.fillStyle = "#059669"; 
+          // Sub-green forest overlays for depth representation (fades out as it gets polluted)
+          if (forestAlpha > 0) {
+            ctx.fillStyle = `rgba(5, 150, 105, ${forestAlpha})`;
             ctx.beginPath();
             ctx.arc(cx + rx - 10, finalY - 6, cont.r * 0.65, 0, Math.PI * 2);
             ctx.fill();
           }
         });
 
-        // 5. Draw Shrinking Ice Caps (reactive to environment stress and vertical tilt)
-        let iceCapRadiusY = 32;
-        if (earthState === "MODERATE") iceCapRadiusY = 14;
-        if (earthState === "POLLUTED") iceCapRadiusY = 1.0; // Melted
+        // 5. Draw Shrinking Ice Caps (reactive to environment stress and vertical tilt) (smoothly lerped)
+        const iceCapRadiusY = getVal(32, 14, 1.0);
 
         if (iceCapRadiusY > 0) {
           ctx.fillStyle = "#f8fafc";
@@ -242,17 +295,21 @@ export default function AnimatedEarth({ score }: AnimatedEarthProps) {
           ctx.fill();
         }
 
-        // 6. Draw Atmosphere Clouds wrapping with speed
-        ctx.fillStyle = earthState === "POLLUTED" ? "rgba(120, 113, 108, 0.45)" : "rgba(255, 255, 255, 0.65)";
+        // 6. Draw Atmosphere Clouds wrapping with speed (smoothly lerped)
+        const cloudColor = getColorAlpha([255, 255, 255], [255, 255, 255], [120, 113, 108], 0.65, 0.65, 0.45);
+        const shadowColor = getColorAlpha([255, 255, 255], [255, 255, 255], [78, 71, 65], 0.35, 0.35, 0.30);
+
         cloudsArray.forEach((cloud) => {
           let rx = ((cloud.cx + cloudRotationAngleRef.current * 32 + width / 2) % width) - width / 2;
           const tiltCloudY = Math.sin(verticalTiltRef.current) * cloud.cx * 0.3;
+          
+          ctx.fillStyle = cloudColor;
           ctx.beginPath();
           ctx.arc(cx + rx, cy + cloud.cy + tiltCloudY, cloud.radius, 0, Math.PI * 2);
           ctx.fill();
 
           // Cloud shadow styling
-          ctx.fillStyle = earthState === "POLLUTED" ? "rgba(78, 71, 65, 0.3)" : "rgba(255, 255, 255, 0.35)";
+          ctx.fillStyle = shadowColor;
           ctx.beginPath();
           ctx.arc(cx + rx + 4, cy + cloud.cy + tiltCloudY + 3, cloud.radius * 0.75, 0, Math.PI * 2);
           ctx.fill();
@@ -271,9 +328,11 @@ export default function AnimatedEarth({ score }: AnimatedEarthProps) {
 
         ctx.restore(); // Exit earth clip boundary
 
-        // 8. Draw Growing trees around the Earth perimeter (healthy only)
-        if (earthState === "HEALTHY") {
+        // 8. Draw Growing trees around the Earth perimeter (fades out as it gets polluted)
+        const treesAlpha = Math.max(0, 1 - currentStateValRef.current);
+        if (treesAlpha > 0) {
           ctx.save();
+          ctx.globalAlpha = treesAlpha;
           ctx.fillStyle = "#34d399";
           for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 8) {
             // Include vertical tilt influence on perimeter tree angles
@@ -297,7 +356,7 @@ export default function AnimatedEarth({ score }: AnimatedEarthProps) {
           ctx.restore();
         }
 
-        // 9. Draw orbiting satellites / particles
+        // 9. Draw orbiting satellites / particles (smoothly transition configuration and color)
         debris.forEach((deb) => {
           if (!isDraggingRef.current) {
             deb.angle += deb.speed;
@@ -314,29 +373,38 @@ export default function AnimatedEarth({ score }: AnimatedEarthProps) {
             ctx.globalAlpha = 1.0;
           }
 
-          if (earthState === "HEALTHY") {
-            ctx.fillStyle = "#38bdf8"; // cyan micro satellites
-            ctx.beginPath();
-            ctx.arc(orbitX, orbitY, deb.size, 0, Math.PI * 2);
-            ctx.fill();
-            
-            ctx.strokeStyle = "rgba(56, 189, 248, 0.45)";
+          let debColor = "";
+          let debSize = 3;
+          let lineAlpha = 0;
+          let wobbleAmp = 0;
+
+          const t = currentStateValRef.current;
+          if (t <= 1) {
+            // HEALTHY to MODERATE
+            debColor = lerpColor([56, 189, 248], [203, 213, 225], t);
+            debSize = lerp(deb.size, 3, t);
+            lineAlpha = lerp(0.45, 0, t);
+            wobbleAmp = 0;
+          } else {
+            // MODERATE to POLLUTED
+            debColor = lerpColorAlpha([203, 213, 225], [239, 68, 68], 1.0, 0.7, t - 1);
+            debSize = lerp(3, deb.size * 0.75, t - 1);
+            lineAlpha = 0;
+            wobbleAmp = lerp(0, 8, t - 1);
+          }
+
+          ctx.fillStyle = debColor;
+          ctx.beginPath();
+          ctx.arc(orbitX, orbitY + Math.sin(rotationAngleRef.current * 4) * wobbleAmp, debSize, 0, Math.PI * 2);
+          ctx.fill();
+
+          if (lineAlpha > 0) {
+            ctx.strokeStyle = `rgba(56, 189, 248, ${lineAlpha})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(orbitX - 6, orbitY);
             ctx.lineTo(orbitX + 6, orbitY);
             ctx.stroke();
-          } else if (earthState === "MODERATE") {
-            ctx.fillStyle = "#cbd5e1";
-            ctx.beginPath();
-            ctx.arc(orbitX, orbitY, 3, 0, Math.PI * 2);
-            ctx.fill();
-          } else {
-            // Embers and industrial ash clouds
-            ctx.fillStyle = "rgba(239, 68, 68, 0.7)"; 
-            ctx.beginPath();
-            ctx.arc(orbitX, orbitY + Math.sin(rotationAngleRef.current * 4) * 8, deb.size * 0.75, 0, Math.PI * 2);
-            ctx.fill();
           }
           ctx.restore();
         });
@@ -352,7 +420,7 @@ export default function AnimatedEarth({ score }: AnimatedEarthProps) {
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [earthState]);
+  }, []);
 
   // Drag Gesture Handlers
   const handleStart = (clientX: number, clientY: number) => {
@@ -450,7 +518,12 @@ export default function AnimatedEarth({ score }: AnimatedEarthProps) {
         }}
         onTouchEnd={handleEnd}
       >
-        <canvas ref={canvasRef} className="max-w-full w-[430px] h-[430px] md:w-[490px] md:h-[490px] aspect-square block transition-transform duration-550 group-hover:scale-[1.01]" />
+        <canvas 
+          ref={canvasRef} 
+          aria-label="Interactive 3D Earth representing carbon footprint status" 
+          role="img" 
+          className="max-w-full w-[430px] h-[430px] md:w-[490px] md:h-[490px] aspect-square block transition-transform duration-550 group-hover:scale-[1.01]" 
+        />
         
         {/* Visual helper overlays on action hover */}
         <div className="absolute inset-x-0 bottom-6 flex justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -460,14 +533,14 @@ export default function AnimatedEarth({ score }: AnimatedEarthProps) {
           </span>
         </div>
       </div>
-
+ 
       {/* Interactive Control Deck for Globe */}
       <div className="mt-6 w-full max-w-sm bg-slate-900/60 backdrop-blur-md rounded-2xl border border-slate-800/80 p-4 shrink-0 shadow-lg select-none">
         <div className="flex items-center gap-1.5 mb-3">
           <Sliders className="h-3.5 w-3.5 text-emerald-400" />
           <span className="text-[10px] font-mono font-bold text-slate-300 uppercase tracking-widest">Globe Control Deck</span>
         </div>
-
+ 
         {/* 1. Simulation Override Mode */}
         <div className="mb-4">
           <label className="text-[9px] font-mono text-slate-400 block mb-1.5 uppercase">Interactive Biosphere Mode</label>
@@ -514,7 +587,7 @@ export default function AnimatedEarth({ score }: AnimatedEarthProps) {
             </button>
           </div>
         </div>
-
+ 
         {/* 2. Motion Deck */}
         <div className="flex items-center justify-between gap-2.5">
           {/* Pause/Play Button & Reset */}
@@ -527,6 +600,7 @@ export default function AnimatedEarth({ score }: AnimatedEarthProps) {
                   : "bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200"
               }`}
               title={userWantsAutoRotate ? "Pause Orbital Rotation" : "Resume Orbital Rotation"}
+              aria-label={userWantsAutoRotate ? "Pause Orbital Rotation" : "Resume Orbital Rotation"}
             >
               {userWantsAutoRotate ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
             </button>
@@ -535,6 +609,7 @@ export default function AnimatedEarth({ score }: AnimatedEarthProps) {
               onClick={resetCamera}
               className="p-2 rounded-xl border border-slate-850 bg-slate-950 text-slate-400 hover:text-slate-200 hover:bg-slate-900 transition-all cursor-pointer flex items-center justify-center"
               title="Reset View Angle"
+              aria-label="Reset View Angle"
             >
               <RotateCcw className="h-3.5 w-3.5" />
             </button>
