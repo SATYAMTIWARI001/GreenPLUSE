@@ -870,6 +870,19 @@ app.get("/api/environment/stats", (req, res) => {
   res.json(db.environment);
 });
 
+// Footer Likes APIs
+app.get("/api/footer/likes", (req, res) => {
+  const db = loadDB();
+  res.json({ likes: db.environment.satyamLikesCount || 0 });
+});
+
+app.post("/api/footer/like", (req, res) => {
+  const db = loadDB();
+  db.environment.satyamLikesCount = (db.environment.satyamLikesCount || 0) + 1;
+  saveDB(db);
+  res.json({ likes: db.environment.satyamLikesCount });
+});
+
 // Admin Panel Admin APIs
 app.get("/api/admin/analytics", (req, res) => {
   const db = loadDB();

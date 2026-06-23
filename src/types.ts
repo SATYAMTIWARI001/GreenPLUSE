@@ -105,6 +105,7 @@ export interface EnvironmentStats {
   treesPlantedTotal: number;
   co2ReducedTotal: number; // in kg
   usersActiveCount: number;
+  satyamLikesCount?: number;
 }
 
 export interface SystemAnalytics {

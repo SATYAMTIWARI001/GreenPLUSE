@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { 
   Leaf, Sun, Moon, ShieldCheck, Trophy, Sparkles, Navigation, 
   HelpCircle, User as UserIcon, LogOut, Trees, AlertTriangle, 
-  Bell, ChevronDown, CheckCircle, ArrowRight, ArrowLeft, Utensils, Trash2, Car, Zap 
+  Bell, ChevronDown, CheckCircle, ArrowRight, ArrowLeft, Utensils, Trash2, Car, Zap, Heart 
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import AnimatedEarth from "./components/AnimatedEarth";
@@ -38,6 +38,10 @@ export default function App() {
   // Scoring parameters
   const [currentScore, setCurrentScore] = useState<number>(0);
   const [activeResult, setActiveResult] = useState<CarbonResult | null>(null);
+
+  // Footer Likes parameters
+  const [likes, setLikes] = useState<number>(0);
+  const [hasLiked, setHasLiked] = useState<boolean>(false);
 
   // Community dynamic statistics
   const [plantationCounter, setPlantationCounter] = useState({
@@ -113,6 +117,19 @@ export default function App() {
 
     // Refresh telemetry
     fetchEnvironmentStats();
+
+    // Fetch footer likes
+    fetch("/api/footer/likes")
+      .then(res => res.json())
+      .then(data => {
+        if (typeof data.likes === "number") {
+          setLikes(data.likes);
+        }
+      })
+      .catch(err => console.error("Could not fetch footer likes", err));
+
+    const liked = localStorage.getItem("satyam-footer-liked") === "true";
+    setHasLiked(liked);
   }, []);
 
   const fetchEnvironmentStats = async () => {
@@ -124,6 +141,30 @@ export default function App() {
       }
     } catch (e) {
       // Keep static preseed values
+    }
+  };
+
+  const handleLikeSatyam = async () => {
+    if (hasLiked) {
+      showToast("You've already appreciated Satyam's precision crafting!", "info");
+      return;
+    }
+    try {
+      const res = await fetch("/api/footer/like", { method: "POST" });
+      if (res.ok) {
+        const data = await res.json();
+        setLikes(data.likes);
+        setHasLiked(true);
+        localStorage.setItem("satyam-footer-liked", "true");
+        showToast("Thank you for liking! Satyam appreciates your support! ❤️", "success");
+      }
+    } catch (err) {
+      console.error("Could not record footer like", err);
+      // Fallback
+      setLikes(prev => prev + 1);
+      setHasLiked(true);
+      localStorage.setItem("satyam-footer-liked", "true");
+      showToast("Thank you for liking! Satyam appreciates your support! ❤️", "success");
     }
   };
 
@@ -664,8 +705,24 @@ export default function App() {
           <div className="flex items-center gap-3">
             <GreenPulseLogo size="sm" className="opacity-95" />
             <div className="text-left font-sans text-xs">
-              <span className="font-bold text-slate-850 dark:text-slate-300 block">GreenPulse AI</span>
-              <p className="text-slate-500 mt-0.5">Designed and crafted with precision by <b className="text-emerald-400">SATYAM</b></p>
+              <span className="font-bold text-slate-850 dark:text-slate-300 block font-display">GreenPulse AI</span>
+              <div className="flex flex-wrap items-center gap-2.5 mt-1">
+                <p className="text-slate-500">
+                  Designed and crafted with precision by <b className="text-emerald-400">SATYAM</b>
+                </p>
+                <button
+                  onClick={handleLikeSatyam}
+                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold font-mono border transition-all duration-305 transform active:scale-95 cursor-pointer shadow-sm ${
+                    hasLiked
+                      ? "bg-rose-950/40 border-rose-500/30 text-rose-400"
+                      : "bg-slate-950/40 border-slate-850 hover:border-rose-500/30 text-slate-400 hover:text-rose-400 hover:bg-rose-950/10"
+                  }`}
+                  aria-label={`Like Satyam's design, current likes: ${likes}`}
+                >
+                  <Heart className={`h-3 w-3 transition-transform ${hasLiked ? "fill-rose-500 text-rose-500 scale-110 animate-pulse" : "text-slate-400"}`} />
+                  <span>{likes}</span>
+                </button>
+              </div>
             </div>
           </div>
           <div className="flex flex-col items-center md:items-end gap-1 text-center md:text-right text-[11px] font-mono">
