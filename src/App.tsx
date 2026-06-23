@@ -15,6 +15,8 @@ import Dashboard from "./components/Dashboard";
 import AdminPanel from "./components/AdminPanel";
 import CarbonTwin from "./components/CarbonTwin";
 import RewardsStore from "./components/RewardsStore";
+import BadgesGallery from "./components/BadgesGallery";
+import ActionPlanner from "./components/ActionPlanner";
 import GreenPulseLogo from "./components/GreenPulseLogo";
 import { User, CarbonResult } from "./types";
 
@@ -31,7 +33,7 @@ export default function App() {
   };
   
   // Navigation states
-  const [activeTab, setActiveTab] = useState<'landing' | 'calculate' | 'dashboard' | 'leaderboard' | 'challenges' | 'twin' | 'rewards' | 'admin'>('landing');
+  const [activeTab, setActiveTab] = useState<'landing' | 'calculate' | 'dashboard' | 'leaderboard' | 'challenges' | 'twin' | 'rewards' | 'admin' | 'badges' | 'planner'>('landing');
   const [editingName, setEditingName] = useState<boolean>(false);
   const [newNameVal, setNewNameVal] = useState<string>("");
   
@@ -599,6 +601,22 @@ export default function App() {
                     >
                       Leaderboard
                     </button>
+                    <button
+                      onClick={() => setActiveTab('planner')}
+                      className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl cursor-pointer transition ${
+                        activeTab === 'planner' ? "bg-emerald-600 text-white shadow-md" : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-200"
+                      }`}
+                    >
+                      Action Planner
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('badges')}
+                      className={`flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-xl cursor-pointer transition ${
+                        activeTab === 'badges' ? "bg-emerald-600 text-white shadow-md" : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-200"
+                      }`}
+                    >
+                      Achievements
+                    </button>
                     {currentUser?.role === 'admin' && (
                       <button
                         onClick={() => setActiveTab('admin')}
@@ -683,6 +701,22 @@ export default function App() {
 
                       {activeTab === 'admin' && currentUser?.role === 'admin' && (
                         <AdminPanel onBack={() => setActiveTab('landing')} showToast={showToast} />
+                      )}
+
+                      {activeTab === 'badges' && (
+                        <BadgesGallery 
+                          user={currentUser} 
+                          onBack={() => setActiveTab('landing')} 
+                        />
+                      )}
+
+                      {activeTab === 'planner' && (
+                        <ActionPlanner 
+                          user={currentUser} 
+                          onUserUpdate={handleUserUpdate} 
+                          onBack={() => setActiveTab('landing')} 
+                          showToast={showToast} 
+                        />
                       )}
                     </motion.div>
                   </AnimatePresence>
